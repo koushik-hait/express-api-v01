@@ -1,18 +1,14 @@
 const express = require('express')
 const router = express.Router();
 const home = require('../Controllers/home')
+const about = require('../Controllers/about')
 
-// middleware that is specific to this router
-router.use((req, res, next) => {
-  console.log('Time: ', Date.now())
-  next()
-})
+
 // define the home page route
 router.get('/home', home.home )
 router.get('/home/create', home.home_create )
 // define the about route
-router.get('/about', (req, res) => {
-  res.status(200).send('About page')
-})
+router.get('/about/list', about.api_about_list)
+router.get('/about/create', about.api_about_create)
 
 module.exports = router
