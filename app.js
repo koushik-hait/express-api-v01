@@ -1,5 +1,5 @@
 const express = require('express');
-const apis = require('./routes/api')
+const apis = require('./Routes/api')
 
 // ...
 
@@ -15,13 +15,6 @@ const apis = require('./routes/api')
 
 const app = express();
 app.use('/api/v1', apis)
-app.get('/', (req,res)=>{
-    res.status(200).send('hello my get client......')
-});
-
-app.post('/', (req,res)=>{
-    res.status(200).send('hello my post client......')
-});
 
 const port = 3000;
 app.listen(port,() => {

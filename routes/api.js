@@ -1,5 +1,6 @@
 const express = require('express')
-const router = express.Router()
+const router = express.Router();
+const home = require('../Controllers/home')
 
 // middleware that is specific to this router
 router.use((req, res, next) => {
@@ -7,9 +8,8 @@ router.use((req, res, next) => {
   next()
 })
 // define the home page route
-router.get('/home', (req, res) => {
-  res.status(200).send('Home page')
-})
+router.get('/home', home.home )
+router.get('/home/create', home.home_create )
 // define the about route
 router.get('/about', (req, res) => {
   res.status(200).send('About page')
