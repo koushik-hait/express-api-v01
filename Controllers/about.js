@@ -2,6 +2,8 @@ const { QueryTypes } = require('sequelize');
 // const {sequelize} = require('../db')
 const db = require('../models/index')
 const Test = require('../Models/Test')
+const Test1 = require('../Models/Test1')
+const BaseModel = require('../Models/Base')
 const sequelize = db.sequelize
 
 exports.api_about_list = async (req,res)=>{
@@ -10,7 +12,8 @@ exports.api_about_list = async (req,res)=>{
     res.status(200).send({"data":test_data});
 }
 
-exports.api_about_create = (req,res)=>{
-    console.log('about Page');
-    res.status(200).send('About page');
+exports.api_about_create = async (req,res)=>{
+    // Create a new user
+    await Test1.create({ test1_key: `${BaseModel.auto_key}`,test1_name: "Test 123", test1_text: "test text 123" });
+    res.status(200).send('Test Created');
 }
