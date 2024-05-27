@@ -1,0 +1,283 @@
+﻿{
+    "result": {
+        "totalCount": 39,
+        "totalItem": 39,
+        "items": [
+            {
+                "stateCode": "37",
+                "stateCodeDisplay": null,
+                "stateName": "Andhra Pradesh",
+                "stateAbbreviation": "AD",
+                "code": 37
+            },
+            {
+                "stateCode": "35",
+                "stateCodeDisplay": null,
+                "stateName": "Andaman and Nicobar Islands",
+                "stateAbbreviation": "AN",
+                "code": 35
+            },
+            {
+                "stateCode": "28",
+                "stateCodeDisplay": null,
+                "stateName": "Andhra Pradesh(Old)",
+                "stateAbbreviation": "AP",
+                "code": 28
+            },
+            {
+                "stateCode": "12",
+                "stateCodeDisplay": null,
+                "stateName": "Arunachal Pradesh",
+                "stateAbbreviation": "AR",
+                "code": 12
+            },
+            {
+                "stateCode": "18",
+                "stateCodeDisplay": null,
+                "stateName": "Assam",
+                "stateAbbreviation": "AS",
+                "code": 18
+            },
+            {
+                "stateCode": "10",
+                "stateCodeDisplay": null,
+                "stateName": "Bihar",
+                "stateAbbreviation": "BH",
+                "code": 10
+            },
+            {
+                "stateCode": "04",
+                "stateCodeDisplay": null,
+                "stateName": "Chandigarh",
+                "stateAbbreviation": "CH",
+                "code": 4
+            },
+            {
+                "stateCode": "22",
+                "stateCodeDisplay": null,
+                "stateName": "Chhattisgarh",
+                "stateAbbreviation": "CT",
+                "code": 22
+            },
+            {
+                "stateCode": "25",
+                "stateCodeDisplay": null,
+                "stateName": "Daman and Diu",
+                "stateAbbreviation": "DD",
+                "code": 25
+            },
+            {
+                "stateCode": "07",
+                "stateCodeDisplay": null,
+                "stateName": "Delhi",
+                "stateAbbreviation": "DL",
+                "code": 7
+            },
+            {
+                "stateCode": "26",
+                "stateCodeDisplay": null,
+                "stateName": "Dadra and Nagar Haveli and Daman and Diu",
+                "stateAbbreviation": "DN",
+                "code": 26
+            },
+            {
+                "stateCode": "30",
+                "stateCodeDisplay": null,
+                "stateName": "Goa",
+                "stateAbbreviation": "GA",
+                "code": 30
+            },
+            {
+                "stateCode": "24",
+                "stateCodeDisplay": null,
+                "stateName": "Gujarat",
+                "stateAbbreviation": "GJ",
+                "code": 24
+            },
+            {
+                "stateCode": "02",
+                "stateCodeDisplay": null,
+                "stateName": "Himachal Pradesh",
+                "stateAbbreviation": "HP",
+                "code": 2
+            },
+            {
+                "stateCode": "06",
+                "stateCodeDisplay": null,
+                "stateName": "Haryana",
+                "stateAbbreviation": "HR",
+                "code": 6
+            },
+            {
+                "stateCode": "20",
+                "stateCodeDisplay": null,
+                "stateName": "Jharkhand",
+                "stateAbbreviation": "JH",
+                "code": 20
+            },
+            {
+                "stateCode": "01",
+                "stateCodeDisplay": null,
+                "stateName": "Jammu and Kashmir",
+                "stateAbbreviation": "JK",
+                "code": 1
+            },
+            {
+                "stateCode": "29",
+                "stateCodeDisplay": null,
+                "stateName": "Karnataka",
+                "stateAbbreviation": "KA",
+                "code": 29
+            },
+            {
+                "stateCode": "32",
+                "stateCodeDisplay": null,
+                "stateName": "Kerala",
+                "stateAbbreviation": "KL",
+                "code": 32
+            },
+            {
+                "stateCode": "38",
+                "stateCodeDisplay": null,
+                "stateName": "Ladakh",
+                "stateAbbreviation": "LA",
+                "code": 38
+            },
+            {
+                "stateCode": "31",
+                "stateCodeDisplay": null,
+                "stateName": "Lakshadweep",
+                "stateAbbreviation": "LD",
+                "code": 31
+            },
+            {
+                "stateCode": "17",
+                "stateCodeDisplay": null,
+                "stateName": "Meghalaya",
+                "stateAbbreviation": "ME",
+                "code": 17
+            },
+            {
+                "stateCode": "27",
+                "stateCodeDisplay": null,
+                "stateName": "Maharashtra",
+                "stateAbbreviation": "MH",
+                "code": 27
+            },
+            {
+                "stateCode": "15",
+                "stateCodeDisplay": null,
+                "stateName": "Mizoram",
+                "stateAbbreviation": "MI",
+                "code": 15
+            },
+            {
+                "stateCode": "14",
+                "stateCodeDisplay": null,
+                "stateName": "Manipur",
+                "stateAbbreviation": "MN",
+                "code": 14
+            },
+            {
+                "stateCode": "23",
+                "stateCodeDisplay": null,
+                "stateName": "Madhya Pradesh",
+                "stateAbbreviation": "MP",
+                "code": 23
+            },
+            {
+                "stateCode": "13",
+                "stateCodeDisplay": null,
+                "stateName": "Nagaland",
+                "stateAbbreviation": "NL",
+                "code": 13
+            },
+            {
+                "stateCode": "21",
+                "stateCodeDisplay": null,
+                "stateName": "Odisha",
+                "stateAbbreviation": "OR",
+                "code": 21
+            },
+            {
+                "stateCode": "97",
+                "stateCodeDisplay": null,
+                "stateName": "Other Territory",
+                "stateAbbreviation": "OT",
+                "code": 97
+            },
+            {
+                "stateCode": "03",
+                "stateCodeDisplay": null,
+                "stateName": "Punjab",
+                "stateAbbreviation": "PB",
+                "code": 3
+            },
+            {
+                "stateCode": "34",
+                "stateCodeDisplay": null,
+                "stateName": "Puducherry",
+                "stateAbbreviation": "PY",
+                "code": 34
+            },
+            {
+                "stateCode": "08",
+                "stateCodeDisplay": null,
+                "stateName": "Rajasthan",
+                "stateAbbreviation": "RJ",
+                "code": 8
+            },
+            {
+                "stateCode": "11",
+                "stateCodeDisplay": null,
+                "stateName": "Sikkim",
+                "stateAbbreviation": "SK",
+                "code": 11
+            },
+            {
+                "stateCode": "33",
+                "stateCodeDisplay": null,
+                "stateName": "Tamil Nadu",
+                "stateAbbreviation": "TN",
+                "code": 33
+            },
+            {
+                "stateCode": "16",
+                "stateCodeDisplay": null,
+                "stateName": "Tripura",
+                "stateAbbreviation": "TR",
+                "code": 16
+            },
+            {
+                "stateCode": "36",
+                "stateCodeDisplay": null,
+                "stateName": "Telangana",
+                "stateAbbreviation": "TS",
+                "code": 36
+            },
+            {
+                "stateCode": "09",
+                "stateCodeDisplay": null,
+                "stateName": "Uttar Pradesh",
+                "stateAbbreviation": "UP",
+                "code": 9
+            },
+            {
+                "stateCode": "05",
+                "stateCodeDisplay": null,
+                "stateName": "Uttarakhand",
+                "stateAbbreviation": "UT",
+                "code": 5
+            },
+            {
+                "stateCode": "19",
+                "stateCodeDisplay": null,
+                "stateName": "West Bengal",
+                "stateAbbreviation": "WB",
+                "code": 19
+            }
+        ]
+    },
+    "success": true,
+    "error": null
+}

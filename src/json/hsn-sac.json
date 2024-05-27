@@ -1,0 +1,1480 @@
+﻿{
+    "result": {
+        "totalCount": 76,
+        "totalItem": 76,
+        "items": [
+            {
+                "hsnsacCode": "5703",
+                "desc": "DOOR MAT",
+                "appl": "G",
+                "isSystem": "N",
+                "extinct": "N",
+                "createdBy": 1020,
+                "createdOn": "2022-03-27T16:05:21+05:30",
+                "lastModifiedBy": 1020,
+                "lastModifiedOn": "2022-03-27T16:05:21+05:30",
+                "dataVersion": 2526,
+                "lockApplFor": false,
+                "invHsnsacDetails": [
+                    {
+                        "effectiveDate": "2022-03-01T00:00:00+05:30",
+                        "invgstRateCode": {
+                            "taxName": "GST 12%",
+                            "remarks": null,
+                            "igstRate": 12,
+                            "cgstRate": 6,
+                            "sgstRate": 6,
+                            "cessRate": 0,
+                            "extinct": "N",
+                            "code": 103
+                        },
+                        "remarks": "12%",
+                        "slabAppl": "N",
+                        "slabBasis": null,
+                        "hsnSacSlabs": [],
+                        "code": 111
+                    }
+                ],
+                "govtIdentifier": "5703",
+                "code": 124
+            },
+            {
+                "hsnsacCode": "6101",
+                "desc": "KIDS CAP",
+                "appl": "G",
+                "isSystem": "N",
+                "extinct": "N",
+                "createdBy": 1020,
+                "createdOn": "2022-03-27T16:06:11+05:30",
+                "lastModifiedBy": 1020,
+                "lastModifiedOn": "2022-03-27T16:06:11+05:30",
+                "dataVersion": 2527,
+                "lockApplFor": false,
+                "invHsnsacDetails": [
+                    {
+                        "effectiveDate": "2022-03-01T00:00:00+05:30",
+                        "invgstRateCode": null,
+                        "remarks": null,
+                        "slabAppl": "Y",
+                        "slabBasis": "N",
+                        "hsnSacSlabs": [
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 0,
+                                "gstRateRef": {
+                                    "taxName": "GST 5%",
+                                    "remarks": null,
+                                    "igstRate": 5,
+                                    "cgstRate": 2.5,
+                                    "sgstRate": 2.5,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 101
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "5%",
+                                "hsnsacDetCode": null,
+                                "code": 110
+                            },
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 1000.01,
+                                "gstRateRef": {
+                                    "taxName": "GST 12%",
+                                    "remarks": null,
+                                    "igstRate": 12,
+                                    "cgstRate": 6,
+                                    "sgstRate": 6,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 103
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "12%",
+                                "hsnsacDetCode": null,
+                                "code": 111
+                            }
+                        ],
+                        "code": 112
+                    }
+                ],
+                "govtIdentifier": "6101",
+                "code": 126
+            },
+            {
+                "hsnsacCode": "6103",
+                "desc": "BOYS JACKET,DENIM HALF PANT,GIRLS HOT PANT SET,HOT PANT,LADIES HOT PANT.MENS COTTON PANT",
+                "appl": "G",
+                "isSystem": "N",
+                "extinct": "N",
+                "createdBy": 1020,
+                "createdOn": "2022-03-27T16:07:22+05:30",
+                "lastModifiedBy": 1020,
+                "lastModifiedOn": "2022-03-27T16:07:22+05:30",
+                "dataVersion": 2528,
+                "lockApplFor": false,
+                "invHsnsacDetails": [
+                    {
+                        "effectiveDate": "2022-03-01T00:00:00+05:30",
+                        "invgstRateCode": null,
+                        "remarks": null,
+                        "slabAppl": "Y",
+                        "slabBasis": "N",
+                        "hsnSacSlabs": [
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 0,
+                                "gstRateRef": {
+                                    "taxName": "GST 5%",
+                                    "remarks": null,
+                                    "igstRate": 5,
+                                    "cgstRate": 2.5,
+                                    "sgstRate": 2.5,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 101
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "5%",
+                                "hsnsacDetCode": null,
+                                "code": 112
+                            },
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 1000.01,
+                                "gstRateRef": {
+                                    "taxName": "GST 12%",
+                                    "remarks": null,
+                                    "igstRate": 12,
+                                    "cgstRate": 6,
+                                    "sgstRate": 6,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 103
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "12%",
+                                "hsnsacDetCode": null,
+                                "code": 113
+                            }
+                        ],
+                        "code": 113
+                    }
+                ],
+                "govtIdentifier": "6103",
+                "code": 128
+            },
+            {
+                "hsnsacCode": "6104",
+                "desc": "GIRLS PANT,GIRLS SHORT,LADISE PLAZO",
+                "appl": "G",
+                "isSystem": "N",
+                "extinct": "N",
+                "createdBy": 1020,
+                "createdOn": "2022-03-27T16:08:21+05:30",
+                "lastModifiedBy": 1020,
+                "lastModifiedOn": "2022-03-27T16:08:21+05:30",
+                "dataVersion": 2529,
+                "lockApplFor": false,
+                "invHsnsacDetails": [
+                    {
+                        "effectiveDate": "2022-03-01T00:00:00+05:30",
+                        "invgstRateCode": null,
+                        "remarks": null,
+                        "slabAppl": "Y",
+                        "slabBasis": "N",
+                        "hsnSacSlabs": [
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 0,
+                                "gstRateRef": {
+                                    "taxName": "GST 5%",
+                                    "remarks": null,
+                                    "igstRate": 5,
+                                    "cgstRate": 2.5,
+                                    "sgstRate": 2.5,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 101
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "5%",
+                                "hsnsacDetCode": null,
+                                "code": 114
+                            },
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 1000.01,
+                                "gstRateRef": {
+                                    "taxName": "GST 12%",
+                                    "remarks": null,
+                                    "igstRate": 12,
+                                    "cgstRate": 6,
+                                    "sgstRate": 6,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 103
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "12%",
+                                "hsnsacDetCode": null,
+                                "code": 115
+                            }
+                        ],
+                        "code": 114
+                    }
+                ],
+                "govtIdentifier": "6104",
+                "code": 130
+            },
+            {
+                "hsnsacCode": "6107",
+                "desc": "BOYS PAJAMA,LADIES PAYJAMA,MENS BOXER,MENS BRIEFS,MENS PAYJAMA,SANDO SET",
+                "appl": "G",
+                "isSystem": "N",
+                "extinct": "N",
+                "createdBy": 1020,
+                "createdOn": "2022-03-27T16:10:49+05:30",
+                "lastModifiedBy": 1020,
+                "lastModifiedOn": "2022-03-27T16:10:49+05:30",
+                "dataVersion": 2530,
+                "lockApplFor": false,
+                "invHsnsacDetails": [
+                    {
+                        "effectiveDate": "2022-03-01T00:00:00+05:30",
+                        "invgstRateCode": null,
+                        "remarks": null,
+                        "slabAppl": "Y",
+                        "slabBasis": "N",
+                        "hsnSacSlabs": [
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 0,
+                                "gstRateRef": {
+                                    "taxName": "GST 5%",
+                                    "remarks": null,
+                                    "igstRate": 5,
+                                    "cgstRate": 2.5,
+                                    "sgstRate": 2.5,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 101
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "5%",
+                                "hsnsacDetCode": null,
+                                "code": 116
+                            },
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 1000.01,
+                                "gstRateRef": {
+                                    "taxName": "GST 12%",
+                                    "remarks": null,
+                                    "igstRate": 12,
+                                    "cgstRate": 6,
+                                    "sgstRate": 6,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 103
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "12%",
+                                "hsnsacDetCode": null,
+                                "code": 117
+                            }
+                        ],
+                        "code": 115
+                    }
+                ],
+                "govtIdentifier": "6107",
+                "code": 132
+            },
+            {
+                "hsnsacCode": "6108",
+                "desc": "BOYS NIGHT DRESS, GIRLS INNER, GIRLS LEGGINGS SET, GIRLS LEGGINS, LADIES PANTY, LADIES INNER",
+                "appl": "G",
+                "isSystem": "N",
+                "extinct": "N",
+                "createdBy": 1020,
+                "createdOn": "2022-03-27T03:42:19+05:30",
+                "lastModifiedBy": 1025,
+                "lastModifiedOn": "2022-06-28T05:45:26+05:30",
+                "dataVersion": 36504,
+                "lockApplFor": false,
+                "invHsnsacDetails": [
+                    {
+                        "effectiveDate": "2022-02-28T10:30:00+05:30",
+                        "invgstRateCode": null,
+                        "remarks": null,
+                        "slabAppl": "Y",
+                        "slabBasis": "N",
+                        "hsnSacSlabs": [
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 0,
+                                "gstRateRef": {
+                                    "taxName": "GST 5%",
+                                    "remarks": null,
+                                    "igstRate": 5,
+                                    "cgstRate": 2.5,
+                                    "sgstRate": 2.5,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 101
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "5%",
+                                "hsnsacDetCode": null,
+                                "code": 118
+                            },
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 1000.01,
+                                "gstRateRef": {
+                                    "taxName": "GST 12%",
+                                    "remarks": null,
+                                    "igstRate": 12,
+                                    "cgstRate": 6,
+                                    "sgstRate": 6,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 103
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "12%",
+                                "hsnsacDetCode": null,
+                                "code": 119
+                            }
+                        ],
+                        "code": 116
+                    }
+                ],
+                "govtIdentifier": "6108",
+                "code": 134
+            },
+            {
+                "hsnsacCode": "6109",
+                "desc": "BOYS SHIRT,BOYS SLIVLESS,BOYS T.SHIRT,LADIES SHIRT,MENS SHIRT,MENS T SHIRT (F/S),MENS T SHIRT (H/S)",
+                "appl": "G",
+                "isSystem": "N",
+                "extinct": "N",
+                "createdBy": 1020,
+                "createdOn": "2022-03-27T16:13:47+05:30",
+                "lastModifiedBy": 1020,
+                "lastModifiedOn": "2022-03-27T16:13:47+05:30",
+                "dataVersion": 2532,
+                "lockApplFor": false,
+                "invHsnsacDetails": [
+                    {
+                        "effectiveDate": "2022-03-01T00:00:00+05:30",
+                        "invgstRateCode": null,
+                        "remarks": null,
+                        "slabAppl": "Y",
+                        "slabBasis": "N",
+                        "hsnSacSlabs": [
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 0,
+                                "gstRateRef": {
+                                    "taxName": "GST 5%",
+                                    "remarks": null,
+                                    "igstRate": 5,
+                                    "cgstRate": 2.5,
+                                    "sgstRate": 2.5,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 101
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "5%",
+                                "hsnsacDetCode": null,
+                                "code": 120
+                            },
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 1000.01,
+                                "gstRateRef": {
+                                    "taxName": "GST 12%",
+                                    "remarks": null,
+                                    "igstRate": 12,
+                                    "cgstRate": 6,
+                                    "sgstRate": 6,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 103
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "12%",
+                                "hsnsacDetCode": null,
+                                "code": 121
+                            }
+                        ],
+                        "code": 117
+                    }
+                ],
+                "govtIdentifier": "6109",
+                "code": 136
+            },
+            {
+                "hsnsacCode": "6110",
+                "desc": "BOYS SWEATER, KIDS PULLOVER SET, LADIES CATIGAN, MENS PULLOVER, MENS SWEATER, SWEATER",
+                "appl": "G",
+                "isSystem": "N",
+                "extinct": "N",
+                "createdBy": 1020,
+                "createdOn": "2022-03-27T16:15:17+05:30",
+                "lastModifiedBy": 1020,
+                "lastModifiedOn": "2022-03-27T16:15:17+05:30",
+                "dataVersion": 2533,
+                "lockApplFor": false,
+                "invHsnsacDetails": [
+                    {
+                        "effectiveDate": "2022-03-01T00:00:00+05:30",
+                        "invgstRateCode": null,
+                        "remarks": null,
+                        "slabAppl": "Y",
+                        "slabBasis": "N",
+                        "hsnSacSlabs": [
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 0,
+                                "gstRateRef": {
+                                    "taxName": "GST 5%",
+                                    "remarks": null,
+                                    "igstRate": 5,
+                                    "cgstRate": 2.5,
+                                    "sgstRate": 2.5,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 101
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "5%",
+                                "hsnsacDetCode": null,
+                                "code": 122
+                            },
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 1000.01,
+                                "gstRateRef": {
+                                    "taxName": "GST 12%",
+                                    "remarks": null,
+                                    "igstRate": 12,
+                                    "cgstRate": 6,
+                                    "sgstRate": 6,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 103
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "12%",
+                                "hsnsacDetCode": null,
+                                "code": 123
+                            }
+                        ],
+                        "code": 118
+                    }
+                ],
+                "govtIdentifier": "6110",
+                "code": 138
+            },
+            {
+                "hsnsacCode": "6111",
+                "desc": "BABA SUIT,HALF PANT,SUITES,BABY SUIT,DUNGRI,GIRLS SET,BABASUIT SET,PANT,SWART SHIRT,MENS SWART SHIRT",
+                "appl": "G",
+                "isSystem": "N",
+                "extinct": "N",
+                "createdBy": 1020,
+                "createdOn": "2022-03-27T16:18:40+05:30",
+                "lastModifiedBy": 1020,
+                "lastModifiedOn": "2022-03-27T16:18:40+05:30",
+                "dataVersion": 2534,
+                "lockApplFor": false,
+                "invHsnsacDetails": [
+                    {
+                        "effectiveDate": "2022-03-01T00:00:00+05:30",
+                        "invgstRateCode": null,
+                        "remarks": null,
+                        "slabAppl": "Y",
+                        "slabBasis": "N",
+                        "hsnSacSlabs": [
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 0,
+                                "gstRateRef": {
+                                    "taxName": "GST 5%",
+                                    "remarks": null,
+                                    "igstRate": 5,
+                                    "cgstRate": 2.5,
+                                    "sgstRate": 2.5,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 101
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "5%",
+                                "hsnsacDetCode": null,
+                                "code": 124
+                            },
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 1000.01,
+                                "gstRateRef": {
+                                    "taxName": "GST 12%",
+                                    "remarks": null,
+                                    "igstRate": 12,
+                                    "cgstRate": 6,
+                                    "sgstRate": 6,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 103
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "12%",
+                                "hsnsacDetCode": null,
+                                "code": 125
+                            }
+                        ],
+                        "code": 119
+                    }
+                ],
+                "govtIdentifier": "6111",
+                "code": 140
+            },
+            {
+                "hsnsacCode": "6112",
+                "desc": "LADIES TRACK SUIT MENS TRACK SUIT",
+                "appl": "G",
+                "isSystem": "N",
+                "extinct": "N",
+                "createdBy": 1020,
+                "createdOn": "2022-03-27T16:20:39+05:30",
+                "lastModifiedBy": 1020,
+                "lastModifiedOn": "2022-03-27T16:20:39+05:30",
+                "dataVersion": 2535,
+                "lockApplFor": false,
+                "invHsnsacDetails": [
+                    {
+                        "effectiveDate": "2022-03-01T00:00:00+05:30",
+                        "invgstRateCode": null,
+                        "remarks": null,
+                        "slabAppl": "Y",
+                        "slabBasis": "N",
+                        "hsnSacSlabs": [
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 0,
+                                "gstRateRef": {
+                                    "taxName": "GST 5%",
+                                    "remarks": null,
+                                    "igstRate": 5,
+                                    "cgstRate": 2.5,
+                                    "sgstRate": 2.5,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 101
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "5%",
+                                "hsnsacDetCode": null,
+                                "code": 126
+                            },
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 1000.01,
+                                "gstRateRef": {
+                                    "taxName": "GST 12%",
+                                    "remarks": null,
+                                    "igstRate": 12,
+                                    "cgstRate": 6,
+                                    "sgstRate": 6,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 103
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "12%",
+                                "hsnsacDetCode": null,
+                                "code": 127
+                            }
+                        ],
+                        "code": 120
+                    }
+                ],
+                "govtIdentifier": "6112",
+                "code": 142
+            },
+            {
+                "hsnsacCode": "6114",
+                "desc": "BOYS JOGGERS PANT GIRLS TOP",
+                "appl": "G",
+                "isSystem": "N",
+                "extinct": "N",
+                "createdBy": 1020,
+                "createdOn": "2022-03-27T16:21:35+05:30",
+                "lastModifiedBy": 1020,
+                "lastModifiedOn": "2022-03-27T16:21:35+05:30",
+                "dataVersion": 2536,
+                "lockApplFor": false,
+                "invHsnsacDetails": [
+                    {
+                        "effectiveDate": "2022-03-01T00:00:00+05:30",
+                        "invgstRateCode": null,
+                        "remarks": null,
+                        "slabAppl": "Y",
+                        "slabBasis": "N",
+                        "hsnSacSlabs": [
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 0,
+                                "gstRateRef": {
+                                    "taxName": "GST 5%",
+                                    "remarks": null,
+                                    "igstRate": 5,
+                                    "cgstRate": 2.5,
+                                    "sgstRate": 2.5,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 101
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "5%",
+                                "hsnsacDetCode": null,
+                                "code": 128
+                            },
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 1000.01,
+                                "gstRateRef": {
+                                    "taxName": "GST 12%",
+                                    "remarks": null,
+                                    "igstRate": 12,
+                                    "cgstRate": 6,
+                                    "sgstRate": 6,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 103
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "12%",
+                                "hsnsacDetCode": null,
+                                "code": 129
+                            }
+                        ],
+                        "code": 121
+                    }
+                ],
+                "govtIdentifier": "6114",
+                "code": 144
+            },
+            {
+                "hsnsacCode": "6115",
+                "desc": "GIRLS CAPRI",
+                "appl": "G",
+                "isSystem": "N",
+                "extinct": "N",
+                "createdBy": 1020,
+                "createdOn": "2022-03-27T16:22:19+05:30",
+                "lastModifiedBy": 1020,
+                "lastModifiedOn": "2022-03-27T16:22:19+05:30",
+                "dataVersion": 2537,
+                "lockApplFor": false,
+                "invHsnsacDetails": [
+                    {
+                        "effectiveDate": "2022-03-01T00:00:00+05:30",
+                        "invgstRateCode": null,
+                        "remarks": null,
+                        "slabAppl": "Y",
+                        "slabBasis": "N",
+                        "hsnSacSlabs": [
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 0,
+                                "gstRateRef": {
+                                    "taxName": "GST 5%",
+                                    "remarks": null,
+                                    "igstRate": 5,
+                                    "cgstRate": 2.5,
+                                    "sgstRate": 2.5,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 101
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "5%",
+                                "hsnsacDetCode": null,
+                                "code": 130
+                            },
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 1000.01,
+                                "gstRateRef": {
+                                    "taxName": "GST 12%",
+                                    "remarks": null,
+                                    "igstRate": 12,
+                                    "cgstRate": 6,
+                                    "sgstRate": 6,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 103
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "12%",
+                                "hsnsacDetCode": null,
+                                "code": 131
+                            }
+                        ],
+                        "code": 122
+                    }
+                ],
+                "govtIdentifier": "6115",
+                "code": 146
+            },
+            {
+                "hsnsacCode": "6201",
+                "desc": "RAINCOAT",
+                "appl": "G",
+                "isSystem": "N",
+                "extinct": "N",
+                "createdBy": 1020,
+                "createdOn": "2022-03-27T16:24:15+05:30",
+                "lastModifiedBy": 1020,
+                "lastModifiedOn": "2022-03-27T16:24:15+05:30",
+                "dataVersion": 2538,
+                "lockApplFor": false,
+                "invHsnsacDetails": [
+                    {
+                        "effectiveDate": "2022-03-01T00:00:00+05:30",
+                        "invgstRateCode": null,
+                        "remarks": null,
+                        "slabAppl": "Y",
+                        "slabBasis": "N",
+                        "hsnSacSlabs": [
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 0,
+                                "gstRateRef": {
+                                    "taxName": "GST 5%",
+                                    "remarks": null,
+                                    "igstRate": 5,
+                                    "cgstRate": 2.5,
+                                    "sgstRate": 2.5,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 101
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "5%",
+                                "hsnsacDetCode": null,
+                                "code": 132
+                            },
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 1000,
+                                "gstRateRef": {
+                                    "taxName": "GST 12%",
+                                    "remarks": null,
+                                    "igstRate": 12,
+                                    "cgstRate": 6,
+                                    "sgstRate": 6,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 103
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "12%",
+                                "hsnsacDetCode": null,
+                                "code": 133
+                            }
+                        ],
+                        "code": 123
+                    }
+                ],
+                "govtIdentifier": "6201",
+                "code": 148
+            },
+            {
+                "hsnsacCode": "6203",
+                "desc": "BOYS COTTON PANT,BOYS HALF PANT,BOYS JEANS PANT,HALF JAWAHAR JACKET,MEN BERMUDA,MENS HALF PANT",
+                "appl": "G",
+                "isSystem": "N",
+                "extinct": "N",
+                "createdBy": 1020,
+                "createdOn": "2022-03-27T16:25:47+05:30",
+                "lastModifiedBy": 1020,
+                "lastModifiedOn": "2022-03-27T16:25:47+05:30",
+                "dataVersion": 2539,
+                "lockApplFor": false,
+                "invHsnsacDetails": [
+                    {
+                        "effectiveDate": "2022-03-01T00:00:00+05:30",
+                        "invgstRateCode": null,
+                        "remarks": null,
+                        "slabAppl": "Y",
+                        "slabBasis": "N",
+                        "hsnSacSlabs": [
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 0,
+                                "gstRateRef": {
+                                    "taxName": "GST 5%",
+                                    "remarks": null,
+                                    "igstRate": 5,
+                                    "cgstRate": 2.5,
+                                    "sgstRate": 2.5,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 101
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "5%",
+                                "hsnsacDetCode": null,
+                                "code": 134
+                            },
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 1000.01,
+                                "gstRateRef": {
+                                    "taxName": "GST 12%",
+                                    "remarks": null,
+                                    "igstRate": 12,
+                                    "cgstRate": 6,
+                                    "sgstRate": 6,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 103
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "12%",
+                                "hsnsacDetCode": null,
+                                "code": 135
+                            }
+                        ],
+                        "code": 124
+                    }
+                ],
+                "govtIdentifier": "6203",
+                "code": 150
+            },
+            {
+                "hsnsacCode": "6301",
+                "desc": "BLANKET",
+                "appl": "G",
+                "isSystem": "N",
+                "extinct": "N",
+                "createdBy": 1020,
+                "createdOn": "2022-03-27T16:47:22+05:30",
+                "lastModifiedBy": 1020,
+                "lastModifiedOn": "2022-03-27T16:47:22+05:30",
+                "dataVersion": 2549,
+                "lockApplFor": false,
+                "invHsnsacDetails": [
+                    {
+                        "effectiveDate": "2022-03-01T00:00:00+05:30",
+                        "invgstRateCode": null,
+                        "remarks": null,
+                        "slabAppl": "Y",
+                        "slabBasis": "N",
+                        "hsnSacSlabs": [
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 0,
+                                "gstRateRef": {
+                                    "taxName": "GST 5%",
+                                    "remarks": null,
+                                    "igstRate": 5,
+                                    "cgstRate": 2.5,
+                                    "sgstRate": 2.5,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 101
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "5%",
+                                "hsnsacDetCode": null,
+                                "code": 154
+                            },
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 1000.01,
+                                "gstRateRef": {
+                                    "taxName": "GST 12%",
+                                    "remarks": null,
+                                    "igstRate": 12,
+                                    "cgstRate": 6,
+                                    "sgstRate": 6,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 103
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "12%",
+                                "hsnsacDetCode": null,
+                                "code": 155
+                            }
+                        ],
+                        "code": 134
+                    }
+                ],
+                "govtIdentifier": "6301",
+                "code": 170
+            },
+            {
+                "hsnsacCode": "6304",
+                "desc": "BED SHEET",
+                "appl": "G",
+                "isSystem": "N",
+                "extinct": "N",
+                "createdBy": 1020,
+                "createdOn": "2022-03-27T16:48:09+05:30",
+                "lastModifiedBy": 1020,
+                "lastModifiedOn": "2022-03-27T16:48:09+05:30",
+                "dataVersion": 2550,
+                "lockApplFor": false,
+                "invHsnsacDetails": [
+                    {
+                        "effectiveDate": "2022-03-01T00:00:00+05:30",
+                        "invgstRateCode": null,
+                        "remarks": null,
+                        "slabAppl": "Y",
+                        "slabBasis": "N",
+                        "hsnSacSlabs": [
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 0,
+                                "gstRateRef": {
+                                    "taxName": "GST 5%",
+                                    "remarks": null,
+                                    "igstRate": 5,
+                                    "cgstRate": 2.5,
+                                    "sgstRate": 2.5,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 101
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "5%",
+                                "hsnsacDetCode": null,
+                                "code": 156
+                            },
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 1000.01,
+                                "gstRateRef": {
+                                    "taxName": "GST 12%",
+                                    "remarks": null,
+                                    "igstRate": 12,
+                                    "cgstRate": 6,
+                                    "sgstRate": 6,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 103
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "12%",
+                                "hsnsacDetCode": null,
+                                "code": 157
+                            }
+                        ],
+                        "code": 135
+                    }
+                ],
+                "govtIdentifier": "6304",
+                "code": 172
+            },
+            {
+                "hsnsacCode": "6406",
+                "desc": "LADIES LAGGINGS",
+                "appl": "G",
+                "isSystem": "N",
+                "extinct": "N",
+                "createdBy": 1020,
+                "createdOn": "2022-03-27T16:48:52+05:30",
+                "lastModifiedBy": 1020,
+                "lastModifiedOn": "2022-03-27T16:48:52+05:30",
+                "dataVersion": 2551,
+                "lockApplFor": false,
+                "invHsnsacDetails": [
+                    {
+                        "effectiveDate": "2022-03-01T00:00:00+05:30",
+                        "invgstRateCode": null,
+                        "remarks": null,
+                        "slabAppl": "Y",
+                        "slabBasis": "N",
+                        "hsnSacSlabs": [
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 0,
+                                "gstRateRef": {
+                                    "taxName": "GST 5%",
+                                    "remarks": null,
+                                    "igstRate": 5,
+                                    "cgstRate": 2.5,
+                                    "sgstRate": 2.5,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 101
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "5%",
+                                "hsnsacDetCode": null,
+                                "code": 158
+                            },
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 1000.01,
+                                "gstRateRef": {
+                                    "taxName": "GST 12%",
+                                    "remarks": null,
+                                    "igstRate": 12,
+                                    "cgstRate": 6,
+                                    "sgstRate": 6,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 103
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "12%",
+                                "hsnsacDetCode": null,
+                                "code": 159
+                            }
+                        ],
+                        "code": 136
+                    }
+                ],
+                "govtIdentifier": "6406",
+                "code": 174
+            },
+            {
+                "hsnsacCode": "6505",
+                "desc": "LADIES CAP MENS CAP",
+                "appl": "G",
+                "isSystem": "N",
+                "extinct": "N",
+                "createdBy": 1020,
+                "createdOn": "2022-03-27T16:49:35+05:30",
+                "lastModifiedBy": 1020,
+                "lastModifiedOn": "2022-03-27T16:49:35+05:30",
+                "dataVersion": 2552,
+                "lockApplFor": false,
+                "invHsnsacDetails": [
+                    {
+                        "effectiveDate": "2022-03-01T00:00:00+05:30",
+                        "invgstRateCode": null,
+                        "remarks": null,
+                        "slabAppl": "Y",
+                        "slabBasis": "N",
+                        "hsnSacSlabs": [
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 0,
+                                "gstRateRef": {
+                                    "taxName": "GST 5%",
+                                    "remarks": null,
+                                    "igstRate": 5,
+                                    "cgstRate": 2.5,
+                                    "sgstRate": 2.5,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 101
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "5%",
+                                "hsnsacDetCode": null,
+                                "code": 160
+                            },
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 1000.01,
+                                "gstRateRef": {
+                                    "taxName": "GST 12%",
+                                    "remarks": null,
+                                    "igstRate": 12,
+                                    "cgstRate": 6,
+                                    "sgstRate": 6,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 103
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "12%",
+                                "hsnsacDetCode": null,
+                                "code": 161
+                            }
+                        ],
+                        "code": 137
+                    }
+                ],
+                "govtIdentifier": "6505",
+                "code": 176
+            },
+            {
+                "hsnsacCode": "6911",
+                "desc": "COFFEE MUG SET",
+                "appl": "G",
+                "isSystem": "N",
+                "extinct": "N",
+                "createdBy": 1020,
+                "createdOn": "2022-03-27T16:50:23+05:30",
+                "lastModifiedBy": 1025,
+                "lastModifiedOn": "2022-06-27T15:26:03+05:30",
+                "dataVersion": 36439,
+                "lockApplFor": false,
+                "invHsnsacDetails": [
+                    {
+                        "effectiveDate": "2022-03-01T00:00:00+05:30",
+                        "invgstRateCode": {
+                            "taxName": "GST 18%",
+                            "remarks": null,
+                            "igstRate": 18,
+                            "cgstRate": 9,
+                            "sgstRate": 9,
+                            "cessRate": 0,
+                            "extinct": "N",
+                            "code": 105
+                        },
+                        "remarks": "18%",
+                        "slabAppl": "N",
+                        "slabBasis": null,
+                        "hsnSacSlabs": [],
+                        "code": 138
+                    }
+                ],
+                "govtIdentifier": "6911",
+                "code": 178
+            },
+            {
+                "hsnsacCode": "7104",
+                "desc": "LADIES GOWN",
+                "appl": "G",
+                "isSystem": "N",
+                "extinct": "N",
+                "createdBy": 1020,
+                "createdOn": "2022-03-27T16:51:12+05:30",
+                "lastModifiedBy": 1020,
+                "lastModifiedOn": "2022-03-27T16:51:12+05:30",
+                "dataVersion": 2554,
+                "lockApplFor": false,
+                "invHsnsacDetails": [
+                    {
+                        "effectiveDate": "2022-03-01T00:00:00+05:30",
+                        "invgstRateCode": null,
+                        "remarks": null,
+                        "slabAppl": "Y",
+                        "slabBasis": "N",
+                        "hsnSacSlabs": [
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 0,
+                                "gstRateRef": {
+                                    "taxName": "GST 5%",
+                                    "remarks": null,
+                                    "igstRate": 5,
+                                    "cgstRate": 2.5,
+                                    "sgstRate": 2.5,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 101
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "5%",
+                                "hsnsacDetCode": null,
+                                "code": 162
+                            },
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 1000.01,
+                                "gstRateRef": {
+                                    "taxName": "GST 12%",
+                                    "remarks": null,
+                                    "igstRate": 12,
+                                    "cgstRate": 6,
+                                    "sgstRate": 6,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 103
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "12%",
+                                "hsnsacDetCode": null,
+                                "code": 163
+                            }
+                        ],
+                        "code": 139
+                    }
+                ],
+                "govtIdentifier": "7104",
+                "code": 180
+            },
+            {
+                "hsnsacCode": "73239490",
+                "desc": "MUG (STEEL)",
+                "appl": "G",
+                "isSystem": "N",
+                "extinct": "N",
+                "createdBy": 1020,
+                "createdOn": "2022-03-27T16:51:41+05:30",
+                "lastModifiedBy": 1020,
+                "lastModifiedOn": "2022-03-27T16:51:41+05:30",
+                "dataVersion": 2555,
+                "lockApplFor": false,
+                "invHsnsacDetails": [
+                    {
+                        "effectiveDate": "2022-03-01T00:00:00+05:30",
+                        "invgstRateCode": {
+                            "taxName": "GST 12%",
+                            "remarks": null,
+                            "igstRate": 12,
+                            "cgstRate": 6,
+                            "sgstRate": 6,
+                            "cessRate": 0,
+                            "extinct": "N",
+                            "code": 103
+                        },
+                        "remarks": "12%",
+                        "slabAppl": "N",
+                        "slabBasis": null,
+                        "hsnSacSlabs": [],
+                        "code": 140
+                    }
+                ],
+                "govtIdentifier": "73239490",
+                "code": 182
+            },
+            {
+                "hsnsacCode": "73239990",
+                "desc": "CONTANER (STEEL)",
+                "appl": "G",
+                "isSystem": "N",
+                "extinct": "N",
+                "createdBy": 1020,
+                "createdOn": "2022-03-27T16:52:05+05:30",
+                "lastModifiedBy": 1020,
+                "lastModifiedOn": "2022-03-27T16:52:05+05:30",
+                "dataVersion": 2556,
+                "lockApplFor": false,
+                "invHsnsacDetails": [
+                    {
+                        "effectiveDate": "2022-03-01T00:00:00+05:30",
+                        "invgstRateCode": {
+                            "taxName": "GST 12%",
+                            "remarks": null,
+                            "igstRate": 12,
+                            "cgstRate": 6,
+                            "sgstRate": 6,
+                            "cessRate": 0,
+                            "extinct": "N",
+                            "code": 103
+                        },
+                        "remarks": "12%",
+                        "slabAppl": "N",
+                        "slabBasis": null,
+                        "hsnSacSlabs": [],
+                        "code": 141
+                    }
+                ],
+                "govtIdentifier": "73239990",
+                "code": 184
+            },
+            {
+                "hsnsacCode": "7404",
+                "desc": "LADIES WEAR LADIES BRA",
+                "appl": "G",
+                "isSystem": "N",
+                "extinct": "N",
+                "createdBy": 1020,
+                "createdOn": "2022-03-27T16:52:48+05:30",
+                "lastModifiedBy": 1020,
+                "lastModifiedOn": "2022-03-27T16:52:48+05:30",
+                "dataVersion": 2557,
+                "lockApplFor": false,
+                "invHsnsacDetails": [
+                    {
+                        "effectiveDate": "2022-03-01T00:00:00+05:30",
+                        "invgstRateCode": null,
+                        "remarks": null,
+                        "slabAppl": "Y",
+                        "slabBasis": "N",
+                        "hsnSacSlabs": [
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 0,
+                                "gstRateRef": {
+                                    "taxName": "GST 5%",
+                                    "remarks": null,
+                                    "igstRate": 5,
+                                    "cgstRate": 2.5,
+                                    "sgstRate": 2.5,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 101
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "5%",
+                                "hsnsacDetCode": null,
+                                "code": 164
+                            },
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 1000.01,
+                                "gstRateRef": {
+                                    "taxName": "GST 12%",
+                                    "remarks": null,
+                                    "igstRate": 12,
+                                    "cgstRate": 6,
+                                    "sgstRate": 6,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 103
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "12%",
+                                "hsnsacDetCode": null,
+                                "code": 165
+                            }
+                        ],
+                        "code": 142
+                    }
+                ],
+                "govtIdentifier": "7404",
+                "code": 186
+            },
+            {
+                "hsnsacCode": "9404",
+                "desc": "BABY DOHAR SINGLE DOHAR",
+                "appl": "G",
+                "isSystem": "N",
+                "extinct": "N",
+                "createdBy": 1020,
+                "createdOn": "2022-03-27T16:54:25+05:30",
+                "lastModifiedBy": 1020,
+                "lastModifiedOn": "2022-03-27T16:54:25+05:30",
+                "dataVersion": 2558,
+                "lockApplFor": false,
+                "invHsnsacDetails": [
+                    {
+                        "effectiveDate": "2022-03-01T00:00:00+05:30",
+                        "invgstRateCode": null,
+                        "remarks": null,
+                        "slabAppl": "Y",
+                        "slabBasis": "N",
+                        "hsnSacSlabs": [
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 0,
+                                "gstRateRef": {
+                                    "taxName": "GST 5%",
+                                    "remarks": null,
+                                    "igstRate": 5,
+                                    "cgstRate": 2.5,
+                                    "sgstRate": 2.5,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 101
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "5%",
+                                "hsnsacDetCode": null,
+                                "code": 166
+                            },
+                            {
+                                "invHsnSacMainCode": 0,
+                                "amountFrom": 1000.01,
+                                "gstRateRef": {
+                                    "taxName": "GST 12%",
+                                    "remarks": null,
+                                    "igstRate": 12,
+                                    "cgstRate": 6,
+                                    "sgstRate": 6,
+                                    "cessRate": 0,
+                                    "extinct": "N",
+                                    "code": 103
+                                },
+                                "gstRateRefCode": null,
+                                "remarks": "12%",
+                                "hsnsacDetCode": null,
+                                "code": 167
+                            }
+                        ],
+                        "code": 143
+                    }
+                ],
+                "govtIdentifier": "9404",
+                "code": 188
+            },
+            {
+                "hsnsacCode": "9503",
+                "desc": "FLYING DISC,  PLAIN, ANIMAL SET, GUN, PUZZLE, CAR, FRUIT CUTTING",
+                "appl": "G",
+                "isSystem": "N",
+                "extinct": "N",
+                "createdBy": 1020,
+                "createdOn": "2022-03-27T16:55:02+05:30",
+                "lastModifiedBy": 1024,
+                "lastModifiedOn": "2022-06-22T18:03:13+05:30",
+                "dataVersion": 35576,
+                "lockApplFor": false,
+                "invHsnsacDetails": [
+                    {
+                        "effectiveDate": "2022-03-01T00:00:00+05:30",
+                        "invgstRateCode": {
+                            "taxName": "GST 12%",
+                            "remarks": null,
+                            "igstRate": 12,
+                            "cgstRate": 6,
+                            "sgstRate": 6,
+                            "cessRate": 0,
+                            "extinct": "N",
+                            "code": 103
+                        },
+                        "remarks": "18%",
+                        "slabAppl": "N",
+                        "slabBasis": null,
+                        "hsnSacSlabs": [],
+                        "code": 144
+                    }
+                ],
+                "govtIdentifier": "9503",
+                "code": 190
+            },
+            {
+                "hsnsacCode": "9503004",
+                "desc": "SOFT TOY",
+                "appl": "G",
+                "isSystem": "N",
+                "extinct": "N",
+                "createdBy": 1025,
+                "createdOn": "2022-05-28T11:49:04+05:30",
+                "lastModifiedBy": 1158,
+                "lastModifiedOn": "2022-06-07T16:39:07+05:30",
+                "dataVersion": 30186,
+                "lockApplFor": false,
+                "invHsnsacDetails": [
+                    {
+                        "effectiveDate": "2022-05-28T00:00:00+05:30",
+                        "invgstRateCode": {
+                            "taxName": "GST 12%",
+                            "remarks": null,
+                            "igstRate": 12,
+                            "cgstRate": 6,
+                            "sgstRate": 6,
+                            "cessRate": 0,
+                            "extinct": "N",
+                            "code": 103
+                        },
+                        "remarks": "12%",
+                        "slabAppl": "N",
+                        "slabBasis": null,
+                        "hsnSacSlabs": [],
+                        "code": 154
+                    }
+                ],
+                "govtIdentifier": "9503004",
+                "code": 214
+            }
+        ]
+    },
+    "success": true,
+    "error": null
+}
