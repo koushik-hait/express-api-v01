@@ -1,8 +1,8 @@
 openapi: 3.0.3
 info:
-  title: RPSAPI
+  title: Proof of concept - Project API
   description: >-
-    # FreeAPI.app
+    # poc.api.v1.0.0
 
     If you find API issues or bugs when testing, please create an [issue](https://github.com/) and assign it to a member of the development team.
   version: 1.2.0
@@ -81,3 +81,74 @@ paths:
                     message: Health check passed
                     statusCode: 200
                     success: true
+  /user/register:
+    post:
+      summary: Register a new user
+      description: Registers a new user with the provided data
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              username:
+                type: string
+              email:
+                type: string
+              role:
+                type: string
+              password:
+                type: string
+      responses:
+        "201":
+          description: Successful response
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+        "400":
+          description: Bad request
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+  /user/login:
+    post:
+      summary: Log in a user
+      description: Logs in a user with the provided credentials
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            oneOf:
+              - type: object
+                properties:
+                  username:
+                    type: string
+                  password:
+                    type: string
+              - type: object
+                properties:
+                  email:
+                    type: string
+                  password:
+                    type: string
+      responses:
+        "200":
+          description: Successful response
+          schema:
+            type: object
+            properties:
+              token:
+                type: string
+        "400":
+          description: Bad request
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
