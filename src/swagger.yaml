@@ -12,6 +12,8 @@ servers:
 paths:
   /healthcheck:
     get:
+      tags:
+        - Public API (default)
       summary: ⛑️ healthcheck
       description: >-
         This API endpoint is commonly used to determine the health status or
@@ -83,6 +85,8 @@ paths:
                     success: true
   /user/register:
     post:
+      tags:
+        - Users API
       summary: Register a new user
       description: Registers a new user with the provided data
       parameters:
@@ -117,6 +121,8 @@ paths:
                 type: string
   /user/login:
     post:
+      tags:
+        - Users API
       summary: Log in a user
       description: Logs in a user with the provided credentials
       parameters:

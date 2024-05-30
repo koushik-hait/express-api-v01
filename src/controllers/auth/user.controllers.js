@@ -1,6 +1,7 @@
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import { UserLoginType, UserRolesEnum } from "../../constants.js";
+import { UserProfile } from "../../models/auth/profile.models.js";
 import { User } from "../../models/auth/user.models.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
@@ -263,14 +264,29 @@ const resendEmailVerification = asyncHandler(async (req, res) => {
   await user.save({ validateBeforeSave: false });
 
   await sendEmail({
-    email: user?.email,
+    email: "koushikhait49@gmail.com",
+    from: process.env.MAILER_FROM,
+    fromName: process.env.MAILER_FROM_NAME,
+    to: user?.email,
     subject: "Please verify your email",
-    mailgenContent: emailVerificationMailgenContent(
-      user.username,
-      `${req.protocol}://${req.get(
-        "host"
-      )}/api/v1/users/verify-email/${unHashedToken}`
-    ),
+    link: `${req.protocol}://${req.get(
+      "host"
+    )}/api/v1/users/verify-email/${unHashedToken}`,
+    mailgenContent: {
+      subject: "Please verify your email",
+      body: {
+        name: user?.username,
+        intro: "Please verify your email",
+        action: {
+          instructions: "Click the button below to verify your email",
+          button: {
+            color: "#DC4D2F",
+            text: "Verify Email",
+            link: `${req.protocol}://${req.get("host")}/api/v1/user/verify-email/${unHashedToken}`,
+          },
+        },
+      },
+    },
   });
   return res
     .status(200)
@@ -347,18 +363,34 @@ const forgotPasswordRequest = asyncHandler(async (req, res) => {
 
   // Send mail with the password reset link. It should be the link of the frontend url with token
   await sendEmail({
-    email: user?.email,
+    email: "koushikhait49@gmail.com",
+    from: process.env.MAILER_FROM,
+    fromName: process.env.MAILER_FROM_NAME,
+    to: user?.email,
     subject: "Password reset request",
-    mailgenContent: forgotPasswordMailgenContent(
-      user.username,
-      // ! NOTE: Following link should be the link of the frontend page responsible to request password reset
-      // ! Frontend will send the below token with the new password in the request body to the backend reset password endpoint
-      // * Ideally take the url from the .env file which should be teh url of the frontend
-      `${req.protocol}://${req.get(
-        "host"
-      )}/api/v1/users/reset-password/${unHashedToken}`
-    ),
+    link: `${req.protocol}://${req.get(
+      "host"
+    )}/api/v1/users/verify-email/${unHashedToken}`,
+    mailgenContent: {
+      subject: "Password reset request",
+      body: {
+        name: user?.username,
+        intro: "Password reset request",
+        action: {
+          instructions: "Click the button below to Reset your password",
+          button: {
+            color: "#DC4D2F",
+            text: "Reset Password",
+            // ! NOTE: Following link should be the link of the frontend page responsible to request password reset
+            // ! Frontend will send the below token with the new password in the request body to the backend reset password endpoint
+            // * Ideally take the url from the .env file which should be teh url of the frontend
+            link: `${req.protocol}://${req.get("host")}/api/v1/user/reset-password/${unHashedToken}`,
+          },
+        },
+      },
+    },
   });
+
   return res
     .status(200)
     .json(
@@ -446,12 +478,29 @@ const assignRole = asyncHandler(async (req, res) => {
 });
 
 const getCurrentUser = asyncHandler(async (req, res) => {
+  if (!req.user) {
+    throw new ApiError(401, "Unauthorized");
+  }
+  const userProfile = await UserProfile.findOne({ owner: req.user?._id });
   return res
     .status(200)
-    .json(new ApiResponse(200, req.user, "Current user fetched successfully"));
+    .json(
+      new ApiResponse(
+        200,
+        { user: req.user, userProfile },
+        "Current user fetched successfully"
+      )
+    );
 });
 
 const handleSocialLogin = asyncHandler(async (req, res) => {
+  console.log(req);
+  if (!req.user) {
+    res
+      .status(401)
+      .json({ message: "Unauthorized" })
+      .redirect(process.env.CLIENT_LOGIN_URL);
+  }
   const user = await User.findById(req.user?._id);
 
   if (!user) {

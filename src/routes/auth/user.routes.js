@@ -1,17 +1,27 @@
 import { Router } from "express";
+import passport from "passport";
 import {
+  forgotPasswordRequest,
+  getCurrentUser,
+  handleSocialLogin,
   loginUser,
+  logoutUser,
   refreshAccessToken,
   registerUser,
+  resetForgottenPassword,
+  updateUserAvatar,
   verifyEmail,
-  logoutUser,
 } from "../../controllers/auth/user.controllers.js";
+import "../../libs/passport/index.js";
+import { verifyJWT } from "../../middlewares/auth.middleware.js";
+import { upload } from "../../middlewares/multer.middleware.js";
 import {
+  userForgotPasswordValidator,
   userLoginValidator,
   userRegisterValidator,
+  userResetForgottenPasswordValidator,
 } from "../../validators/auth/user.validators.js";
 import { validate } from "../../validators/validate.js";
-import { verifyJWT } from "../../middlewares/auth.middleware.js";
 
 const router = Router();
 
@@ -21,23 +31,23 @@ router.route("/login").post(userLoginValidator(), validate, loginUser);
 router.route("/refresh-token").post(refreshAccessToken);
 router.route("/verify-email/:verificationToken").get(verifyEmail);
 
-// router
-//   .route("/forgot-password")
-//   .post(userForgotPasswordValidator(), validate, forgotPasswordRequest);
-// router
-//   .route("/reset-password/:resetToken")
-//   .post(
-//     userResetForgottenPasswordValidator(),
-//     validate,
-//     resetForgottenPassword
-//   );
+router
+  .route("/forgot-password")
+  .post(userForgotPasswordValidator(), validate, forgotPasswordRequest);
+router
+  .route("/reset-password/:resetToken")
+  .post(
+    userResetForgottenPasswordValidator(),
+    validate,
+    resetForgottenPassword
+  );
 
 // // Secured routes
 router.route("/logout").post(verifyJWT, logoutUser);
-// router
-//   .route("/avatar")
-//   .patch(verifyJWT, upload.single("avatar"), updateUserAvatar);
-// router.route("/current-user").get(verifyJWT, getCurrentUser);
+router
+  .route("/avatar")
+  .patch(verifyJWT, upload.single("avatar"), updateUserAvatar);
+router.route("/current-user").get(verifyJWT, getCurrentUser);
 // router
 //   .route("/change-password")
 //   .post(
@@ -70,21 +80,25 @@ router.route("/logout").post(verifyJWT, logoutUser);
 //   }
 // );
 
-// router.route("/github").get(
-//   passport.authenticate("github", {
-//     scope: ["profile", "email"],
-//   }),
-//   (req, res) => {
-//     res.send("redirecting to github...");
-//   }
-// );
+router.route("/github").get(
+  passport.authenticate("github", {
+    scope: ["profile", "email"],
+  })
+  // (req, res) => {
+  //   console.log("redirecting to github...");
+  //   res.send("redirecting to github...");
+  // }
+);
 
 // router
 //   .route("/google/callback")
 //   .get(passport.authenticate("google"), handleSocialLogin);
 
-// router
-//   .route("/github/callback")
-//   .get(passport.authenticate("github"), handleSocialLogin);
+router.route("/github/callback").get(
+  passport.authenticate("github", {
+    failureRedirect: "http://localhost:5173/login", //`${process.env.CLIENT_LOGIN_URL}`,
+  }),
+  handleSocialLogin
+);
 
 export default router;
