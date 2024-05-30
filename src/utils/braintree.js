@@ -1,5 +1,5 @@
 import braintree from "braintree";
-
+console.log("braintree id: ", process.env.BRAINTREE_MERCHANT_ID);
 export const BraintreeGateway = new braintree.BraintreeGateway({
   environment: braintree.Environment.Sandbox,
   merchantId: process.env.BRAINTREE_MERCHANT_ID,
