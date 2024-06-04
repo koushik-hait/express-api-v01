@@ -95,7 +95,8 @@ app.use(morganMiddleware);
 // api routes
 import { errorHandler } from "./middlewares/error.middleware.js";
 import userRouter from "./routes/auth/user.routes.js";
-import blogRoute from "./routes/blog.routes.js";
+import blogRoute from "./routes/blog-app/post.routes.js";
+import blogAdminRoute from "./routes/blog-app/admin.routes.js";
 import healthcheckRouter from "./routes/healthcheck.routes.js";
 import paymentRoute from "./routes/payment.routes.js";
 import publicRouter from "./routes/public.routes.js";
@@ -103,11 +104,12 @@ import videoRouter from "./routes/video.routes.js";
 
 // * healthcheck
 app.use("/api/v1/healthcheck", healthcheckRouter);
-app.use("/api/v1/user", userRouter);
 app.use("/api/v1/public", publicRouter);
+app.use("/api/v1/user", userRouter);
 app.use("/api/v1/video", videoRouter);
 app.use("/api/v1/payment", paymentRoute);
 app.use("/api/v1/blog", blogRoute);
+app.use("/api/v1/blog/admin", blogAdminRoute);
 
 import { avoidInProduction } from "./middlewares/auth.middleware.js";
 
@@ -156,9 +158,9 @@ app.use(
   swaggerUi.serve,
   swaggerUi.setup(swaggerDocument, {
     swaggerOptions: {
-      docExpansion: "none", // keep all the sections collapsed by default
+      docExpansion: "all", // keep all the sections collapsed by default
     },
-    customSiteTitle: "RPS API docs",
+    customSiteTitle: "POC API docs",
   })
 );
 

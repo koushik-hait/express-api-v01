@@ -1,13 +1,15 @@
 import { Router } from "express";
 import {
   addBlog,
-  updateBlog,
   deleteBlog,
   getAllBlogs,
   getBlogById,
-} from "../controllers/blog.controllers.js";
-import { upload } from "../middlewares/multer.middleware.js";
-import { verifyJWT } from "../middlewares/auth.middleware.js";
+  updateBlog,
+  getAllCategories,
+} from "../../controllers/blog-app/post.controllers.js";
+import { verifyJWT } from "../../middlewares/auth.middleware.js";
+import { upload } from "../../middlewares/multer.middleware.js";
+import { mongoIdPathVariableValidator } from "../../validators/mongodb.validators.js";
 
 const router = Router();
 
@@ -21,7 +23,9 @@ router
 router
   .route("delete/:bid")
   .delete(verifyJWT, mongoIdPathVariableValidator("bid"), deleteBlog);
-router.route("/all-blog").get(getAllBlogs);
+router.route("/all").get(getAllBlogs);
 router.route("/reading/:bid").get(getBlogById);
+
+router.route("/category/all").get(verifyJWT, getAllCategories);
 
 export default router;

@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  backend:
+    image: api-server
+    build: .
+    ports:
+      - 5000:5000
+    volumes:
+      - ./:/usr/src/pocapi
+      - /usr/src/pocapi/node_modules
+    env_file:
+      - ./.env
+    depends_on:
+      - mongodb_database
+  mongodb_database:
+    image: mongo
+    container_name: mongodb_database
+    volumes:
+      - data:/data/db
+    ports:
+      - 27017:27017
+
+volumes:
+  data:

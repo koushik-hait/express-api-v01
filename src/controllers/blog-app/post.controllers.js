@@ -1,16 +1,17 @@
 import { v4 as uuidv4 } from "uuid";
-import Blog from "../models/blog.models.js";
-import { ApiError } from "../utils/ApiError.js";
-import { ApiResponse } from "../utils/ApiResponse.js";
-import { asyncHandler } from "../utils/asyncHandler.js";
-import { uploadToCloudinary } from "../utils/cloudinary.js";
+import { BlogPost as Blog } from "../../models/blog-app/post.models.js";
+import { Category } from "../../models/blog-app/category.models.js";
+import { ApiError } from "../../utils/ApiError.js";
+import { ApiResponse } from "../../utils/ApiResponse.js";
+import { asyncHandler } from "../../utils/asyncHandler.js";
+import { uploadToCloudinary } from "../../utils/cloudinary.js";
 
 export const addBlog = asyncHandler(async (req, res) => {
   try {
-    const { title, content, description, publishStatus } = req.body;
+    const { title, content, description, status, tags, category } = req.body;
     const coverPhotoPath = req.files?.coverPhoto?.[0]?.path;
 
-    const coverPhotoUrl = await uploadToCloudinary(coverPhotoPath);
+    const coverPhotoUrl = await uploadToCloudinary(coverPhotoPath, "blogs");
 
     if (!coverPhotoUrl) {
       throw new ApiError(400, "Problem with the uploaded file");
@@ -20,9 +21,12 @@ export const addBlog = asyncHandler(async (req, res) => {
       title,
       content,
       description,
-      publishStatus,
+      status,
       coverImage: coverPhotoUrl.secure_url,
-      publishedAt: publishStatus === "PUBLISHED" ? Date.now() : null,
+      author: req.user._id,
+      tags: JSON.parse(tags) || [],
+      category: category,
+      publishedAt: status === "PUBLISHED" ? Date.now() : null,
     });
 
     return res
@@ -123,6 +127,27 @@ export const getBlogById = asyncHandler(async (req, res) => {
     return res
       .status(200)
       .json(new ApiResponse(200, blog, "Blog fetched successfully"));
+  } catch (error) {
+    return res
+      .status(error.statusCode || 500)
+      .json(
+        new ApiResponse(
+          error.statusCode || 500,
+          null,
+          error.message || "Internal Server Error"
+        )
+      );
+  }
+});
+
+export const getAllCategories = asyncHandler(async (req, res) => {
+  try {
+    const categories = await Category.find().exec();
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(200, categories, "Categories fetched successfully")
+      );
   } catch (error) {
     return res
       .status(error.statusCode || 500)

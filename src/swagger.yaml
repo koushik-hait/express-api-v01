@@ -2,13 +2,13 @@ openapi: 3.0.3
 info:
   title: Proof of concept - Project API
   description: >-
-    # poc.api.v1.0.0
+    # pocapi.v1.0.0
 
-    If you find API issues or bugs when testing, please create an [issue](https://github.com/) and assign it to a member of the development team.
+    If you find API issues or bugs when testing, please create an [issue](https://github.com/koushik-hait/express-api-v01/issues) and assign it to a member of the development team.
   version: 1.2.0
   contact: {}
 servers:
-  - url: "http://localhost:5000/api/v1"
+  - url: "https://koushikhait.site/api/v1"
 paths:
   /healthcheck:
     get:
@@ -100,8 +100,6 @@ paths:
                 type: string
               email:
                 type: string
-              role:
-                type: string
               password:
                 type: string
       responses:
@@ -158,3 +156,104 @@ paths:
             properties:
               error:
                 type: string
+  /user/logout:
+    post:
+      tags:
+        - Users API
+      summary: Log out a user
+      description: Logs out a user by invalidating the session token
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              token:
+                type: string
+      responses:
+        "200":
+          description: Successful response
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+  /blog/create:
+    post:
+      tags:
+        - Blog App
+      summary: Create a new blog post
+      description: Endpoint to create a new blog post
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+              content:
+                type: string
+      responses:
+        "201":
+          description: Blog post created successfully
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+  /blog/update/{bid}:
+    put:
+      tags:
+        - Blog App
+      summary: Update a blog post
+      description: Endpoint to update an existing blog post
+      parameters:
+        - name: bid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                content:
+                  type: string
+      responses:
+        "200":
+          description: Blog post updated successfully
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+  /blog/delete/{bid}:
+    delete:
+      tags:
+        - Blog App
+      summary: Delete a blog post
+      description: Endpoint to delete a blog post by ID
+      parameters:
+        - name: bid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Blog post deleted successfully
