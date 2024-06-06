@@ -27,8 +27,6 @@ try {
     }
   });
 
-  console.log("PASSPORT STRATEGIES: ", process.env.GOOGLE_CALLBACK_URL);
-
   passport.use(
     new GoogleStrategy(
       {

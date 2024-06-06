@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
-import { BlogPost as Blog } from "../../models/blog-app/post.models.js";
 import { Category } from "../../models/blog-app/category.models.js";
+import { BlogComment } from "../../models/blog-app/comment.models.js";
+import { BlogPost as Blog } from "../../models/blog-app/post.models.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
@@ -55,7 +56,7 @@ export const updateBlog = asyncHandler(async (req, res) => {
     }
 
     const blog = await Blog.findByIdAndUpdate(
-      req.params.bid,
+      req.params.pid,
       {
         title,
         content,
@@ -85,7 +86,7 @@ export const updateBlog = asyncHandler(async (req, res) => {
 
 export const deleteBlog = asyncHandler(async (req, res) => {
   try {
-    const blog = await Blog.findByIdAndDelete(req.params.bid);
+    const blog = await Blog.findByIdAndDelete(req.params.pid);
     return res
       .status(200)
       .json(new ApiResponse(200, blog, "Blog deleted successfully"));
@@ -123,10 +124,60 @@ export const getAllBlogs = asyncHandler(async (req, res) => {
 
 export const getBlogById = asyncHandler(async (req, res) => {
   try {
-    const blog = await Blog.findById(req.params.bid);
+    const blog = await Blog.findById(req.params.pid)
+      .populate({ path: "author", select: "_id username avatar" })
+      .exec();
     return res
       .status(200)
       .json(new ApiResponse(200, blog, "Blog fetched successfully"));
+  } catch (error) {
+    return res
+      .status(error.statusCode || 500)
+      .json(
+        new ApiResponse(
+          error.statusCode || 500,
+          null,
+          error.message || "Internal Server Error"
+        )
+      );
+  }
+});
+
+export const addComment = asyncHandler(async (req, res) => {
+  try {
+    const { content, author, postId } = req.body;
+    const newComment = await BlogComment.create({
+      content,
+      author,
+      postId,
+    });
+    return res
+      .status(201)
+      .json(new ApiResponse(201, newComment, "Comment created successfully"));
+  } catch (error) {
+    return res
+      .status(error.statusCode || 500)
+      .json(
+        new ApiResponse(
+          error.statusCode || 500,
+          null,
+          error.message || "Internal Server Error"
+        )
+      );
+  }
+});
+
+export const getAllPostComments = asyncHandler(async (req, res) => {
+  try {
+    const comments = await BlogComment.find({ postId: req.params.pid })
+      .populate({
+        path: "author",
+        select: "_id username avatar",
+      })
+      .exec();
+    return res
+      .status(200)
+      .json(new ApiResponse(200, comments, "Comments fetched successfully"));
   } catch (error) {
     return res
       .status(error.statusCode || 500)

@@ -6,6 +6,8 @@ import {
   getBlogById,
   updateBlog,
   getAllCategories,
+  addComment,
+  getAllPostComments,
 } from "../../controllers/blog-app/post.controllers.js";
 import { verifyJWT } from "../../middlewares/auth.middleware.js";
 import { upload } from "../../middlewares/multer.middleware.js";
@@ -17,15 +19,22 @@ router
   .route("/create")
   .post(verifyJWT, upload.fields([{ name: "coverPhoto" }]), addBlog);
 router
-  .route("/update/:bid")
+  .route("/update/:pid")
   .put(verifyJWT, upload.fields([{ name: "coverPhoto" }]), updateBlog);
 
 router
-  .route("delete/:bid")
-  .delete(verifyJWT, mongoIdPathVariableValidator("bid"), deleteBlog);
+  .route("delete/:pid")
+  .delete(verifyJWT, mongoIdPathVariableValidator("pid"), deleteBlog);
 router.route("/all").get(getAllBlogs);
-router.route("/reading/:bid").get(getBlogById);
-
+router.route("/reading/:pid").get(getBlogById);
+//comment routes
+router.route("/comment/create").post(verifyJWT, addComment);
+router
+  .route("/comment/all/:pid")
+  .get(verifyJWT, mongoIdPathVariableValidator("pid"), getAllPostComments);
+// router.route("/comment/delete/:cid").delete(verifyJWT, mongoIdPathVariableValidator("cid"));
+// router.route("/comment/update/:cid").put(verifyJWT, mongoIdPathVariableValidator("cid"));
+//category routes
 router.route("/category/all").get(verifyJWT, getAllCategories);
 
 export default router;
