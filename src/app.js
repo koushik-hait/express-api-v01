@@ -100,13 +100,15 @@ import blogAdminRoute from "./routes/blog-app/admin.routes.js";
 import healthcheckRouter from "./routes/healthcheck.routes.js";
 import paymentRoute from "./routes/payment.routes.js";
 import publicRouter from "./routes/public.routes.js";
-import videoRouter from "./routes/video.routes.js";
+import videoRouter from "./routes/video-app/video.routes.js";
+import videoAdminRouter from "./routes/video-app/admin.routes.js";
 
 // * healthcheck
 app.use("/api/v1/healthcheck", healthcheckRouter);
 app.use("/api/v1/public", publicRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/video", videoRouter);
+app.use("/api/v1/video/admin", videoAdminRouter);
 app.use("/api/v1/payment", paymentRoute);
 app.use("/api/v1/blog", blogRoute);
 app.use("/api/v1/blog/admin", blogAdminRoute);

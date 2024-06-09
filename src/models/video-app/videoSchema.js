@@ -1,12 +1,13 @@
 import mongoose, { Schema } from "mongoose";
+import {
+  contentRatingEnum,
+  definitionEnum,
+  dimensionEnum,
+  projectionEnum,
+  videoStatusEnum,
+} from "./video.models";
 
-const dimensionEnum = ["2D", "3D"];
-const definitionEnum = ["SD", "HD", "FHD", "UHD"];
-const contentRatingEnum = ["G", "PG", "PG-13", "R", "NC-17"];
-const projectionEnum = ["equirectangular", "cubemap", "360", "VR"];
-const videoStatusEnum = ["DRAFT", "PUBLISHED"];
-
-const videoSchema = new Schema(
+export const videoSchema = new Schema(
   {
     title: {
       type: String,
@@ -201,6 +202,7 @@ const videoSchema = new Schema(
       type: [String],
       default: [],
     },
+
     status: {
       type: String,
       enum: videoStatusEnum,
@@ -209,6 +211,8 @@ const videoSchema = new Schema(
     publishedAt: Date,
     updatedAt: Date,
     createdAt: Date,
+
+    // TODO: Add more fields here
     categoryId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
@@ -222,5 +226,3 @@ const videoSchema = new Schema(
     timestamps: true,
   }
 );
-
-export const Video = mongoose.model("Video", videoSchema);

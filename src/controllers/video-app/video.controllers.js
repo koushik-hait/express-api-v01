@@ -1,9 +1,9 @@
 import { v4 as uuidv4 } from "uuid";
-import { Video } from "../models/video.models.js";
-import { ApiError } from "../utils/ApiError.js";
-import { ApiResponse } from "../utils/ApiResponse.js";
-import { uploadToCloudinary } from "../utils/cloudinary.js";
-import { convertToDASH, convertToHLS } from "../utils/converter.js";
+import { Video } from "../../models/video.models.js";
+import { ApiError } from "../../utils/ApiError.js";
+import { ApiResponse } from "../../utils/ApiResponse.js";
+import { uploadToCloudinary } from "../../utils/cloudinary.js";
+import { convertToDASH, convertToHLS } from "../../utils/converter.js";
 
 /**
  * Handles the uploading of a video file and its associated thumbnail.
