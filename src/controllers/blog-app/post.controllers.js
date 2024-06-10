@@ -211,3 +211,25 @@ export const getAllCategories = asyncHandler(async (req, res) => {
       );
   }
 });
+
+export const search = asyncHandler(async (req, res) => {
+  try {
+    const { q } = req.query;
+    const blogs = await Blog.find({
+      $or: [{ title: { $regex: q, $options: "i" } }, { content: { $regex: q, $options: "i" } }],
+    }).exec();
+    return res
+      .status(200)
+      .json(new ApiResponse(200, blogs, "Blogs fetched successfully"));
+  } catch (error) {
+    return res
+      .status(error.statusCode || 500)
+      .json(
+        new ApiResponse(
+          error.statusCode || 500,
+          null,
+          error.message || "Internal Server Error"
+        )
+      );
+  }
+})

@@ -1,7 +1,9 @@
 import { v4 as uuidv4 } from "uuid";
-import { Video } from "../../models/video.models.js";
+import { VideoCategory } from "../../models/video-app/category.models.js";
+import { Video } from "../../models/video-app/video.models.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
+import { asyncHandler } from "../../utils/asyncHandler.js";
 import { uploadToCloudinary } from "../../utils/cloudinary.js";
 import { convertToDASH, convertToHLS } from "../../utils/converter.js";
 
@@ -13,7 +15,7 @@ import { convertToDASH, convertToHLS } from "../../utils/converter.js";
  */
 export const addVideo = async (req, res) => {
   try {
-    const { title, description, publishStatus } = req.body;
+    const { title, description, status, category } = req.body;
     const videoFilePath = req.files?.video?.[0]?.path;
     const thumbnailFilePath = req.files?.thumbnail?.[0]?.path;
 
@@ -67,10 +69,10 @@ export const addVideo = async (req, res) => {
         level: vRes.video.level,
         bit_rate: vRes.video.bit_rate,
       },
-      status: publishStatus,
-      publishedAt: publishStatus === "PUBLISHED" ? Date.now() : null,
-      // owner: uuidv4(),
-      // categoryId: uuidv4(),
+      status,
+      publishedAt: status === "PUBLIC" ? Date.now() : null,
+      owner: req.user._id,
+      category,
     });
 
     // console.log("l51 videoData: ", videoData);
@@ -101,7 +103,7 @@ export const addVideo = async (req, res) => {
  */
 export const getAllVideo = async (req, res) => {
   try {
-    const videos = await Video.find({ status: "PUBLISHED" }).exec();
+    const videos = await Video.find({ status: "PUBLIC" }).exec();
     return res.status(200).json(new ApiResponse(200, videos, "Success"));
   } catch (error) {
     return res
@@ -139,3 +141,24 @@ export const getVideoById = async (req, res) => {
       );
   }
 };
+
+export const getAllCategories = asyncHandler(async (req, res) => {
+  try {
+    const categories = await VideoCategory.find().exec();
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(200, categories, "Categories fetched successfully")
+      );
+  } catch (error) {
+    return res
+      .status(error.statusCode || 500)
+      .json(
+        new ApiResponse(
+          error.statusCode || 500,
+          null,
+          error.message || "Internal Server Error"
+        )
+      );
+  }
+});

@@ -52,6 +52,59 @@ export const UserLoginType = {
 export const AvailableSocialLogins = Object.values(UserLoginType);
 
 /**
+ * @type {{ TWO_DIMENSION: "2D"; THREE_DIMENSION: "3D"; } as const}
+ */
+export const dimensionEnum = {
+  TWO_DIMENSION: "2D",
+  THREE_DIMENSION: "3D",
+}; //["2D", "3D"];
+export const AvalableVideoDimensions = Object.values(dimensionEnum);
+
+/**
+ * @type {{ STANDARD_DEFINITION: "SD"; HIGH_DEFINITION: "HD"; FULL_HD: "FHD"; ULTRA_HD: "UHD"; } as const}
+ */
+export const definitionEnum = {
+  STANDARD_DEFINITION: "SD",
+  HIGH_DEFINITION: "HD",
+  FULL_HD: "FHD",
+  ULTRA_HD: "UHD",
+}; //["SD", "HD", "FHD", "UHD"];
+export const AvalableVideoDefinitions = Object.values(definitionEnum);
+
+/**
+ * @type {{ GENERAL: "G"; PARENT_GUIDED: "PG"; PARENT_STRONGLY_GUIDED: "PG-13"; RESTRICTED: "R"; ADULTS_ONLY: "NC-17"; } as const}
+ */
+export const contentRatingEnum = {
+  GENERAL: "G",
+  PARENT_GUIDED: "PG",
+  PARENT_STRONGLY_GUIDED: "PG-13",
+  RESTRICTED: "R",
+  ADULTS_ONLY: "NC-17",
+}; //["G", "PG", "PG-13", "R", "NC-17"];
+export const AvalableVideoContentRatings = Object.values(contentRatingEnum);
+
+/**
+ * @type {{ EQUIRECTANGULAR: "equirectangular"; CUBEMAP: "cubemap"; THREE_D: "360"; VR: "VR"; } as const}
+ */
+export const projectionEnum = {
+  EQUIRECTANGULAR: "equirectangular",
+  CUBEMAP: "cubemap",
+  THREE_D: "360",
+  VR: "VR",
+}; //["equirectangular", "cubemap", "360", "VR"];
+export const AvalableVideoProjections = Object.values(projectionEnum);
+
+/**
+ * @type {{ DRAFT: "DRAFT"; PUBLIC: "PUBLIC"; PRIVATE: "PRIVATE"} as const}
+ */
+export const videoStatusEnum = {
+  DRAFT: "DRAFT",
+  PUBLIC: "PUBLIC",
+  PRIVATE: "PRIVATE",
+}; //["DRAFT", "PUBLIC", "PRIVATE"];
+export const AvalableVideoStatuses = Object.values(videoStatusEnum);
+
+/**
  * @type {{ MOST_VIEWED: "mostViewed"; MOST_LIKED: "mostLiked"; LATEST: "latest"; OLDEST: "oldest"} as const}
  */
 export const YouTubeFilterEnum = {

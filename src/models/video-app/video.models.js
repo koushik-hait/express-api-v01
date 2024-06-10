@@ -1,10 +1,20 @@
 import mongoose, { Schema } from "mongoose";
+import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
+import { User } from "../auth/user.models.js";
 
-const dimensionEnum = ["2D", "3D"];
-const definitionEnum = ["SD", "HD", "FHD", "UHD"];
-const contentRatingEnum = ["G", "PG", "PG-13", "R", "NC-17"];
-const projectionEnum = ["equirectangular", "cubemap", "360", "VR"];
-const videoStatusEnum = ["DRAFT", "PUBLISHED"];
+import {
+  AvalableVideoContentRatings,
+  AvalableVideoDefinitions,
+  AvalableVideoDimensions,
+  AvalableVideoProjections,
+  AvalableVideoStatuses,
+  contentRatingEnum,
+  definitionEnum,
+  dimensionEnum,
+  projectionEnum,
+  videoStatusEnum,
+} from "../../constants.js";
+import { Category } from "../blog-app/category.models.js";
 
 const videoSchema = new Schema(
   {
@@ -22,7 +32,7 @@ const videoSchema = new Schema(
         url: {
           type: String,
           required: [true, "Thumbnail URL is required"],
-          default: "https://via.placeholder.com/120x90.png",
+          default: "https://via.placeholder.com/120x90",
         },
         width: {
           type: Number,
@@ -37,7 +47,7 @@ const videoSchema = new Schema(
         url: {
           type: String,
           required: [true, "Thumbnail URL is required"],
-          default: "https://via.placeholder.com/320x180.png",
+          default: "https://via.placeholder.com/320x180",
         },
         width: {
           type: Number,
@@ -52,7 +62,7 @@ const videoSchema = new Schema(
         url: {
           type: String,
           required: [true, "Thumbnail URL is required"],
-          default: "https://via.placeholder.com/480x360.png",
+          default: "https://via.placeholder.com/480x360",
         },
         width: {
           type: Number,
@@ -67,7 +77,7 @@ const videoSchema = new Schema(
         url: {
           type: String,
           required: [true, "Thumbnail URL is required"],
-          default: "https://via.placeholder.com/640x480.png",
+          default: "https://via.placeholder.com/640x480",
         },
         width: {
           type: Number,
@@ -83,13 +93,13 @@ const videoSchema = new Schema(
       duration: String,
       dimension: {
         type: String,
-        enum: dimensionEnum,
-        default: "2D",
+        enum: AvalableVideoDimensions,
+        default: dimensionEnum.TWO_DIMENSION, // 2d or 3d
       },
       definition: {
         type: String,
-        enum: definitionEnum,
-        default: "SD",
+        enum: AvalableVideoDefinitions,
+        default: definitionEnum.STANDARD_DEFINITION, // "SD" or "HD" or "FHD" or "UHD"
       },
       caption: {
         type: Boolean,
@@ -101,13 +111,13 @@ const videoSchema = new Schema(
       },
       contentRating: {
         type: String,
-        enum: contentRatingEnum,
-        default: "G",
+        enum: AvalableVideoContentRatings,
+        default: contentRatingEnum.GENERAL,
       },
       projection: {
         type: String,
-        enum: projectionEnum,
-        default: "equirectangular",
+        enum: AvalableVideoProjections,
+        default: projectionEnum.EQUIRECTANGULAR,
       },
     },
     statistics: {
@@ -203,13 +213,11 @@ const videoSchema = new Schema(
     },
     status: {
       type: String,
-      enum: videoStatusEnum,
-      default: "DRAFT",
+      enum: AvalableVideoStatuses,
+      default: videoStatusEnum.DRAFT,
     },
     publishedAt: Date,
-    updatedAt: Date,
-    createdAt: Date,
-    categoryId: {
+    category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
     },

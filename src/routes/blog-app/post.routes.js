@@ -8,6 +8,7 @@ import {
   getAllCategories,
   addComment,
   getAllPostComments,
+  search,
 } from "../../controllers/blog-app/post.controllers.js";
 import { verifyJWT } from "../../middlewares/auth.middleware.js";
 import { upload } from "../../middlewares/multer.middleware.js";
@@ -36,5 +37,7 @@ router
 // router.route("/comment/update/:cid").put(verifyJWT, mongoIdPathVariableValidator("cid"));
 //category routes
 router.route("/category/all").get(verifyJWT, getAllCategories);
+
+router.route("/search").get(search);
 
 export default router;
