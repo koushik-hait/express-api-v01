@@ -95,23 +95,31 @@ app.use(morganMiddleware);
 // api routes
 import { errorHandler } from "./middlewares/error.middleware.js";
 import userRouter from "./routes/auth/user.routes.js";
-import blogRoute from "./routes/blog-app/post.routes.js";
 import blogAdminRoute from "./routes/blog-app/admin.routes.js";
+import blogRoute from "./routes/blog-app/post.routes.js";
 import healthcheckRouter from "./routes/healthcheck.routes.js";
 import paymentRoute from "./routes/payment.routes.js";
+import portfolioContactRoute from "./routes/portfolio-cms/contact.routes.js"; //portfolio-cms
 import publicRouter from "./routes/public.routes.js";
+import videoAdminRoute from "./routes/video-app/admin.routes.js";
 import videoRouter from "./routes/video-app/video.routes.js";
-import videoAdminRouter from "./routes/video-app/admin.routes.js";
 
 // * healthcheck
 app.use("/api/v1/healthcheck", healthcheckRouter);
+//public route
 app.use("/api/v1/public", publicRouter);
+//user api routes
 app.use("/api/v1/user", userRouter);
+//video-app api routes
 app.use("/api/v1/video", videoRouter);
-app.use("/api/v1/video/admin", videoAdminRouter);
+app.use("/api/v1/video/admin", videoAdminRoute);
+//payment api routes
 app.use("/api/v1/payment", paymentRoute);
+//blog-app api routes
 app.use("/api/v1/blog", blogRoute);
 app.use("/api/v1/blog/admin", blogAdminRoute);
+//portfolio-cms api routes
+app.use("/api/v1/portfolio/", portfolioContactRoute);
 
 import { avoidInProduction } from "./middlewares/auth.middleware.js";
 
