@@ -20,7 +20,7 @@ export const createCategory = asyncHandler(async (req, res) => {
 
 export const getAllCategories = asyncHandler(async (req, res) => {
   try {
-    const categories = await Category.find().exec();
+    const categories = await Category.find({}).exec();
     return res
       .status(200)
       .json(

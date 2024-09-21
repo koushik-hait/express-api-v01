@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import fs from "fs";
 import mongoose from "mongoose";
 
@@ -57,32 +58,28 @@ export const filterObjectKeys = (fieldsArray, objectArray) => {
 };
 
 /**
- *
  * @param {any[]} dataArray
- * @param {number} page
- * @param {number} limit
+ * @param {number} pageNumber
+ * @param {number} itemsPerPage
  * @returns {{previousPage: string | null, currentPage: string, nextPage: string | null, data: any[]}}
  */
-export const getPaginatedPayload = (dataArray, page, limit) => {
-  const startPosition = +(page - 1) * limit;
-
-  const totalItems = dataArray.length; // total documents present after applying search query
-  const totalPages = Math.ceil(totalItems / limit);
-
-  dataArray = structuredClone(dataArray).slice(
-    startPosition,
-    startPosition + limit
-  );
-
+export const getPaginatedPayload = async (
+  dataArray,
+  pageNumber,
+  itemsPerPage
+) => {
+  const totalPages = Math.ceil(dataArray.length / itemsPerPage);
+  const start = (pageNumber - 1) * itemsPerPage;
+  const end = Math.min(start + itemsPerPage, dataArray.length);
   const payload = {
-    page,
-    limit,
+    pageNumber,
+    itemsPerPage,
     totalPages,
-    previousPage: page > 1,
-    nextPage: page < totalPages,
-    totalItems,
-    currentPageItems: dataArray?.length,
-    data: dataArray,
+    previousPage: pageNumber > 1 ? pageNumber - 1 : null,
+    nextPage: pageNumber < totalPages ? pageNumber + 1 : null,
+    totalItems: dataArray.length,
+    currentPageItems: end - start,
+    data: dataArray.slice(start, end),
   };
   return payload;
 };
@@ -184,4 +181,9 @@ export const getMongoosePaginationOptions = ({
  */
 export const getRandomNumber = (max) => {
   return Math.floor(Math.random() * max);
+};
+
+export const genEncryptedPassword = (password) => {
+  const salt = bcrypt.genSaltSync(10);
+  return bcrypt.hashSync(password, salt);
 };

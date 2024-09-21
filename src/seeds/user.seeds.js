@@ -1,98 +1,46 @@
 import { faker } from "@faker-js/faker";
 import fs from "fs";
+import mongoose from "mongoose";
 import { AvailableUserRoles } from "../constants.js";
-import { User } from "../models/apps/auth/user.models.js";
-import { Cart } from "../models/apps/ecommerce/cart.models.js";
-import { EcomProfile } from "../models/apps/ecommerce/profile.models.js";
-import { SocialProfile } from "../models/apps/social-media/profile.models.js";
-import { ApiError } from "../utils/ApiError.js";
-import { ApiResponse } from "../utils/ApiResponse.js";
-import { asyncHandler } from "../utils/asyncHandler.js";
-import { getRandomNumber, removeLocalFile } from "../utils/helpers.js";
+import { UserProfile } from "../models/auth/profile.models.js";
+import { User } from "../models/auth/user.models.js";
+import { genEncryptedPassword } from "../utils/helper.js";
 import { USERS_COUNT } from "./_constants.js";
 
 // Array of fake users
 const users = new Array(USERS_COUNT).fill("_").map(() => ({
   avatar: {
-    url: faker.internet.avatar(),
+    url: faker.image.avatar(),
     localPath: "",
   },
   username: faker.internet.userName(),
   email: faker.internet.email(),
-  password: faker.internet.password(),
-  isEmailVerified: true,
-  role: AvailableUserRoles[getRandomNumber(2)],
+  password: genEncryptedPassword("123456"),
+  isEmailVerified: faker.helpers.arrayElement([true, false]),
+  role: faker.helpers.arrayElement(["USER", "ADMIN"]),
+  loginType: "EMAIL_PASSWORD",
 }));
 
-/**
- * @description Seeding middleware for users api which other api services can use which are dependent on users
- */
-const seedUsers = asyncHandler(async (req, res, next) => {
-  const userCount = await User.count();
-  if (userCount >= USERS_COUNT) {
-    // Don't re-generate the users if we already have them in the database
-    next();
-    return;
-  }
-  await User.deleteMany({}); // delete all the existing users from previous seedings
-  await SocialProfile.deleteMany({}); // delete dependent model documents as well
-  await EcomProfile.deleteMany({}); // delete dependent model documents as well
-  await Cart.deleteMany({}); // delete dependent model documents as well
-  // remove cred json
-  removeLocalFile("./public/temp/seed-credentials.json"); // remove old credentials
-
-  const credentials = [];
-
-  // create Promise array
-  const userCreationPromise = users.map(async (user) => {
-    credentials.push({
-      username: user.username.toLowerCase(),
-      password: user.password,
-      role: user.role,
-    });
-    await User.create(user);
-  });
-
-  // pass promises array to the Promise.all method
-  await Promise.all(userCreationPromise);
-
-  // Once users are created dump the credentials to the json file
-  const json = JSON.stringify(credentials);
-
-  fs.writeFileSync(
-    "./public/temp/seed-credentials.json",
-    json,
-    "utf8",
-    (err) => {
-      console.log("Error while writing the credentials", err);
-    }
-  );
-
-  // proceed with the request
-  next();
-});
-
-/**
- * @description This api gives the saved credentials generated while seeding.
- */
-const getGeneratedCredentials = asyncHandler(async (req, res) => {
+const seedUsers = async () => {
   try {
-    const json = fs.readFileSync("./public/temp/seed-credentials.json", "utf8");
-    return res
-      .status(200)
-      .json(
-        new ApiResponse(
-          200,
-          JSON.parse(json),
-          "Dummy credentials fetched successfully"
-        )
-      );
-  } catch (error) {
-    throw new ApiError(
-      404,
-      "No credentials generated yet. Make sure you have seeded social media or ecommerce api data first which generates users as dependencies."
+    await mongoose.connect(
+      `mongodb+srv://mongo_user:mongouser549344@cluster0.vki8qxl.mongodb.net/poc_app`,
+      {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        // useFindAndModify: false,
+        // useCreateIndex: true,
+      }
     );
+    await User.deleteMany({});
+    await User.insertMany(users);
+    console.log("Users seeded successfully");
+    mongoose.connection.close();
+    process.exit(0);
+  } catch (error) {
+    console.log("Error seeding users: ", error);
+    process.exit(1);
   }
-});
+};
 
-export { getGeneratedCredentials, seedUsers };
+seedUsers();

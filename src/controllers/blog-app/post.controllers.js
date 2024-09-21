@@ -6,6 +6,7 @@ import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 import { uploadToCloudinary } from "../../utils/cloudinary.js";
+import { getMongoosePaginationOptions } from "../../utils/helper.js";
 
 export const addBlog = asyncHandler(async (req, res) => {
   try {
@@ -105,10 +106,62 @@ export const deleteBlog = asyncHandler(async (req, res) => {
 
 export const getAllBlogs = asyncHandler(async (req, res) => {
   try {
-    const blogs = await Blog.find({ status: "PUBLISHED" }).exec();
+    const limit = parseInt(req.query.limit, 10) || 10;
+    const page = parseInt(req.query.page, 10) || 1;
+    const postAggregate = Blog.aggregate([
+      {
+        $match: {
+          status: "PUBLISHED",
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "author",
+          foreignField: "_id",
+          as: "author",
+        },
+      },
+    ]);
+
+    const payload = await Blog.aggregatePaginate(postAggregate, {
+      ...getMongoosePaginationOptions({
+        limit,
+        page,
+        customLabels: {
+          totalDocs: "totalItems",
+          docs: "data",
+        },
+      }),
+    });
+    // const posts = await Blog.find(
+    //   {
+    //     status: "PUBLISHED",
+    //   },
+    //   null,
+    //   { skip: limit * (page - 1), limit, lean: true }
+    // )
+    //   .populate("author")
+    //   .sort({ createdAt: -1 });
+
+    // const totalItems = await Blog.countDocuments({
+    //   status: "PUBLISHED",
+    // });
+
+    // const totalPages = Math.ceil(totalItems / limit);
+    // const payload = {
+    //   pageNumber: page,
+    //   itemsPerPage: limit,
+    //   totalPages,
+    //   previousPage: page > 1 ? page - 1 : null,
+    //   nextPage: page < totalPages ? page + 1 : null,
+    //   totalItems,
+    //   currentPageItems: posts.length,
+    //   data: posts,
+    // };
     return res
       .status(200)
-      .json(new ApiResponse(200, blogs, "Blogs fetched successfully"));
+      .json(new ApiResponse(200, payload, "Blogs fetched successfully"));
   } catch (error) {
     return res
       .status(error.statusCode || 500)
@@ -216,7 +269,10 @@ export const search = asyncHandler(async (req, res) => {
   try {
     const { q } = req.query;
     const blogs = await Blog.find({
-      $or: [{ title: { $regex: q, $options: "i" } }, { content: { $regex: q, $options: "i" } }],
+      $or: [
+        { title: { $regex: q, $options: "i" } },
+        { content: { $regex: q, $options: "i" } },
+      ],
     }).exec();
     return res
       .status(200)
@@ -232,4 +288,4 @@ export const search = asyncHandler(async (req, res) => {
         )
       );
   }
-})
+});

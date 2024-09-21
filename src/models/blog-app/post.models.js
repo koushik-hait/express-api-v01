@@ -29,10 +29,10 @@ const postSchema = new Schema(
       type: [String],
       default: [],
     },
-    category: {
-      type: Schema.Types.ObjectId,
-      ref: "Category",
-    },
+    // category: {
+    //   type: Schema.Types.ObjectId,
+    //   ref: "Category",
+    // },
     status: {
       type: String,
       enum: ["DRAFT", "PUBLISHED"],
