@@ -6,7 +6,10 @@ import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 import { uploadToCloudinary } from "../../utils/cloudinary.js";
-import { getMongoosePaginationOptions } from "../../utils/helper.js";
+import {
+  getMongoosePaginationOptions,
+  validateMongoId,
+} from "../../utils/helper.js";
 
 export const addBlog = asyncHandler(async (req, res) => {
   try {
@@ -164,9 +167,34 @@ export const getAllBlogs = asyncHandler(async (req, res) => {
 
 export const getBlogById = asyncHandler(async (req, res) => {
   try {
-    const blog = await Blog.findById(req.params.pid)
-      .populate({ path: "author", select: "_id username avatar" })
-      .exec();
+    const { pid } = req.params;
+    const blog = await Blog.aggregate([
+      {
+        $match: {
+          _id: validateMongoId(pid),
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "author",
+          foreignField: "_id",
+          as: "author",
+          pipeline: [
+            {
+              $project: {
+                password: 0,
+              },
+            },
+          ],
+        },
+      },
+    ]);
+
+    // console.log(blogAggregate);
+    // const blog = await Blog.findById(req.params.pid)
+    //   .populate({ path: "author", select: "_id username avatar" })
+    //   .exec();
     return res
       .status(200)
       .json(new ApiResponse(200, blog, "Blog fetched successfully"));

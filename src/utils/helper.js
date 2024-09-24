@@ -2,6 +2,10 @@ import bcrypt from "bcrypt";
 import fs from "fs";
 import mongoose from "mongoose";
 
+export const validateMongoId = (id) => {
+  return new mongoose.Types.ObjectId(id);
+};
+
 /**
  *
  * @param {string[]} fieldsArray
