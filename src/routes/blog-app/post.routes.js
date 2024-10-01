@@ -1,14 +1,18 @@
 import { Router } from "express";
 import {
   addBlog,
-  deleteBlog,
-  getAllBlogs,
-  getBlogById,
-  updateBlog,
-  getAllCategories,
-  addComment,
-  getAllPostComments,
+  deletePost,
+  getAllPosts,
+  getPostById,
+  getPostsByDate,
+  getPostsByTag,
+  getPostsByUser,
+  getPostsByUsername,
+  getRecentPosts,
+  getTrendingPosts,
+  removePostImage,
   search,
+  updatePost,
 } from "../../controllers/blog-app/post.controllers.js";
 import { verifyJWT } from "../../middlewares/auth.middleware.js";
 import { upload } from "../../middlewares/multer.middleware.js";
@@ -19,25 +23,36 @@ const router = Router();
 router
   .route("/create")
   .post(verifyJWT, upload.fields([{ name: "coverPhoto" }]), addBlog);
+router.route("/all").get(getAllPosts);
 router
-  .route("/update/:pid")
-  .put(verifyJWT, upload.fields([{ name: "coverPhoto" }]), updateBlog);
-
-router
-  .route("delete/:pid")
-  .delete(verifyJWT, mongoIdPathVariableValidator("pid"), deleteBlog);
-router.route("/all").get(getAllBlogs);
-router.route("/reading/:pid").get(getBlogById);
-//comment routes
-router.route("/comment/create").post(verifyJWT, addComment);
-router
-  .route("/comment/all/:pid")
-  .get(verifyJWT, mongoIdPathVariableValidator("pid"), getAllPostComments);
-// router.route("/comment/delete/:cid").delete(verifyJWT, mongoIdPathVariableValidator("cid"));
-// router.route("/comment/update/:cid").put(verifyJWT, mongoIdPathVariableValidator("cid"));
-//category routes
-router.route("/category/all").get(verifyJWT, getAllCategories);
+  .route("/p/:pid")
+  .get(getPostById)
+  .patch(verifyJWT, upload.fields([{ name: "coverPhoto" }]), updatePost)
+  .delete(deletePost);
 
 router.route("/search").get(search);
+//getPostsByUser /get/my/posts
+router.route("/my/posts").get(verifyJWT, getPostsByUser);
+//getPostsByDate /get/d/:date/posts
+router.route("/top/:x/trending").get(verifyJWT, getTrendingPosts);
+router.route("/top/:x/recent").get(verifyJWT, getRecentPosts);
+router.route("/:username/posts").get(verifyJWT, getPostsByUsername);
+router.route("/t/:tag/posts").get(verifyJWT, getPostsByTag);
+router.route("/remove/image/:imageId/:pid").get(verifyJWT, getPostsByTag);
+
+// router.route("/featured").get();
+//getPostsByUsername /get/:username/posts
+//getPostsByTag /get/t/:tag/posts
+//removePostImage /remove/image/:postId/:imageId
+
+// createPost,
+//   deletePost,
+//   getAllPosts,
+//   getMyPosts,
+//   getPostById,
+//   getPostsByTag,
+//   getPostsByUsername,
+//   removePostImage,
+//   updatePost,
 
 export default router;

@@ -1,9 +1,9 @@
 import { faker } from "@faker-js/faker";
 import mongoose from "mongoose";
-import { User } from "../models/auth/user.models.js";
-import { BlogComment } from "../models/blog-app/comment.models.js";
-import { BlogPost } from "../models/blog-app/post.models.js";
-import { COMMENT_COUNT } from "./_constants.js";
+import { User } from "../../models/auth/user.models.js";
+import { BlogComment } from "../../models/blog-app/comment.models.js";
+import { BlogPost } from "../../models/blog-app/post.models.js";
+import { COMMENT_COUNT } from "../_constants.js";
 
 const seedComments = async () => {
   try {
@@ -33,7 +33,7 @@ const seedComments = async () => {
 
     // Array of fake posts
     const comments = await new Array(COMMENT_COUNT).fill("_").map(() => ({
-      content: faker.lorem.paragraph(),
+      content: '"<h2>hello this is my cimment abc<strong>fff</strong></h2>"',
       postId: posts[Math.floor(Math.random() * posts.length)]._id,
       author: users[Math.floor(Math.random() * users.length)]._id,
     }));

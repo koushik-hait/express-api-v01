@@ -8,8 +8,10 @@ import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 import {
   getLocalPath,
+  getMongoosePaginationOptions,
   getStaticFilePath,
   removeLocalFile,
+  validateMongoId,
 } from "../../utils/helper.js";
 import { sendEmail } from "../../utils/mailer.js";
 
@@ -477,22 +479,6 @@ const assignRole = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "Role changed for the user"));
 });
 
-const getCurrentUser = asyncHandler(async (req, res) => {
-  if (!req.user) {
-    throw new ApiError(401, "Unauthorized");
-  }
-  const userProfile = await UserProfile.findOne({ owner: req.user?._id });
-  return res
-    .status(200)
-    .json(
-      new ApiResponse(
-        200,
-        { user: req.user, userProfile },
-        "Current user fetched successfully"
-      )
-    );
-});
-
 const handleSocialLogin = asyncHandler(async (req, res) => {
   console.log(req);
   if (!req.user) {
@@ -567,7 +553,6 @@ export {
   assignRole,
   changeCurrentPassword,
   forgotPasswordRequest,
-  getCurrentUser,
   handleSocialLogin,
   loginUser,
   logoutUser,

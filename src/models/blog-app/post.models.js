@@ -8,6 +8,9 @@ const postSchema = new Schema(
     title: {
       type: String,
       required: true,
+      // maxlength: [200, "Title should not exceed 200 characters"],
+      // minlength: [3, "Title should not be less than 3 characters"],
+      index: true,
     },
     description: {
       type: String,
@@ -16,6 +19,8 @@ const postSchema = new Schema(
     content: {
       type: String,
       required: true,
+      // maxlength: [5000, "Content should not exceed 5000 characters"],
+      // minlength: [3, "Content should not be less than 3 characters"],
     },
     coverImage: {
       type: String,
@@ -29,10 +34,14 @@ const postSchema = new Schema(
       type: [String],
       default: [],
     },
-    // category: {
-    //   type: Schema.Types.ObjectId,
-    //   ref: "Category",
-    // },
+    category: {
+      type: Schema.Types.ObjectId,
+      ref: "Category",
+    },
+    deleted: {
+      type: Boolean,
+      default: false,
+    },
     status: {
       type: String,
       enum: ["DRAFT", "PUBLISHED"],
@@ -44,7 +53,8 @@ const postSchema = new Schema(
     },
     //TODO: Add owner and tags, category fields here
   },
-  { timestamps: true }
+  { timestamps: true },
+  { autoIndex: false }
 );
 
 postSchema.plugin(mongooseAggregatePaginate);

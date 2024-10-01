@@ -1,8 +1,9 @@
 import { faker } from "@faker-js/faker";
 import mongoose from "mongoose";
-import { User } from "../models/auth/user.models.js";
-import { BlogPost } from "../models/blog-app/post.models.js";
-import { BLOG_CONTENT, POSTS_COUNT } from "./_constants.js";
+import { User } from "../../models/auth/user.models.js";
+import { Category } from "../../models/blog-app/category.models.js";
+import { BlogPost } from "../../models/blog-app/post.models.js";
+import { BLOG_CONTENT, POSTS_COUNT } from "../_constants.js";
 
 const seedPosts = async () => {
   try {
@@ -12,13 +13,19 @@ const seedPosts = async () => {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         // useFindAndModify: false,
-        // useCreateIndex: true,
+        // useCreateIndex: false,
       }
     );
 
     const users = await User.find({ role: "USER" });
     if (users.length === 0) {
       console.log("users not found");
+      return;
+    }
+
+    const categories = await Category.find({});
+    if (categories.length === 0) {
+      console.log("categories not found");
       return;
     }
 
@@ -38,6 +45,7 @@ const seedPosts = async () => {
         category: "nature",
       }),
       author: users[Math.floor(Math.random() * users.length)]._id,
+      category: categories[Math.floor(Math.random() * categories.length)]._id,
       status: faker.helpers.arrayElement(["DRAFT", "PUBLISHED"]),
       publishedAt: faker.date.past(),
     }));

@@ -2,7 +2,6 @@ import { Router } from "express";
 import passport from "passport";
 import {
   forgotPasswordRequest,
-  getCurrentUser,
   handleSocialLogin,
   loginUser,
   logoutUser,
@@ -47,7 +46,7 @@ router.route("/logout").post(verifyJWT, logoutUser);
 router
   .route("/avatar")
   .patch(verifyJWT, upload.single("avatar"), updateUserAvatar);
-router.route("/current-user").get(verifyJWT, getCurrentUser);
+
 // router
 //   .route("/change-password")
 //   .post(

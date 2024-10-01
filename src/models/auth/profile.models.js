@@ -1,5 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import { User } from "./user.models.js";
+import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 
 const profileSchema = new Schema(
   {
@@ -29,7 +30,19 @@ const profileSchema = new Schema(
       type: Date,
       default: null,
     },
-    location: {
+    address: {
+      type: String,
+      default: "",
+    },
+    city: {
+      type: String,
+      default: "",
+    },
+    state: {
+      type: String,
+      default: "",
+    },
+    country: {
       type: String,
       default: "",
     },
@@ -48,5 +61,7 @@ const profileSchema = new Schema(
   },
   { timestamps: true }
 );
+
+profileSchema.plugin(mongooseAggregatePaginate);
 
 export const UserProfile = mongoose.model("UserProfile", profileSchema);

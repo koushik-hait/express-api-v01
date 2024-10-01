@@ -96,7 +96,13 @@ app.use(morganMiddleware);
 import { errorHandler } from "./middlewares/error.middleware.js";
 import userRouter from "./routes/auth/user.routes.js";
 import blogAdminRoute from "./routes/blog-app/admin.routes.js";
-import blogRoute from "./routes/blog-app/post.routes.js";
+import blogBookmarkRoute from "./routes/blog-app/bookmark.routes.js";
+import blogCategoryRoute from "./routes/blog-app/category.routes.js";
+import blogCommentRoute from "./routes/blog-app/comment.routes.js";
+import blogFollowRoute from "./routes/blog-app/follow.routes.js";
+import blogLikeRoute from "./routes/blog-app/like.routes.js";
+import blogPostRoute from "./routes/blog-app/post.routes.js";
+import blogProfileRoute from "./routes/blog-app/profile.routes.js";
 import healthcheckRouter from "./routes/healthcheck.routes.js";
 import paymentRoute from "./routes/payment.routes.js";
 import portfolioContactRoute from "./routes/portfolio-cms/contact.routes.js"; //portfolio-cms
@@ -116,7 +122,13 @@ app.use("/api/v1/video/admin", videoAdminRoute);
 //payment api routes
 app.use("/api/v1/payment", paymentRoute);
 //blog-app api routes
-app.use("/api/v1/blog", blogRoute);
+app.use("/api/v1/blog", blogPostRoute);
+app.use("/api/v1/blog/category", blogCategoryRoute);
+app.use("/api/v1/blog/profile", blogProfileRoute);
+app.use("/api/v1/blog/like", blogLikeRoute);
+app.use("/api/v1/blog/comment", blogCommentRoute);
+app.use("/api/v1/blog/follow", blogFollowRoute);
+app.use("/api/v1/blog/bookmark", blogBookmarkRoute);
 app.use("/api/v1/blog/admin", blogAdminRoute);
 //portfolio-cms api routes
 app.use("/api/v1/portfolio/", portfolioContactRoute);

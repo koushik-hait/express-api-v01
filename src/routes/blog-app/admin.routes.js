@@ -26,15 +26,6 @@ router
 //     addCategory
 //   );
 
-// router
-//   .route("/admin/category/:cid")
-//   .put(
-//     verifyJWT,
-//     verifyPermission([UserRolesEnum.ADMIN]),
-//     mongoIdPathVariableValidator("cid"),
-//     addCategory
-//   );
-
 router
   .route("/category/all")
   .get(verifyJWT, verifyPermission([UserRolesEnum.ADMIN]), getAllCategories);

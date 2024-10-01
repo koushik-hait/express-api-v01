@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import { User } from "../models/auth/user.models.js";
-import { BlogFollow } from "../models/blog-app/follow.models.js";
+import { User } from "../../models/auth/user.models.js";
+import { BlogFollow } from "../../models/blog-app/follow.models.js";
 
 (async () => {
   await mongoose.connect(

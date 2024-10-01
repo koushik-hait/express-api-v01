@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import mongoose, { Schema } from "mongoose";
+import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 import {
   AvailableSocialLogins,
   AvailableUserRoles,
@@ -75,6 +76,8 @@ const userSchema = new Schema(
   },
   { timestamps: true }
 );
+
+userSchema.plugin(mongooseAggregatePaginate);
 
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();

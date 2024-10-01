@@ -1,6 +1,4 @@
 import { v4 as uuidv4 } from "uuid";
-import { Category } from "../../models/blog-app/category.models.js";
-import { BlogComment } from "../../models/blog-app/comment.models.js";
 import { BlogPost as Blog } from "../../models/blog-app/post.models.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
@@ -10,6 +8,152 @@ import {
   getMongoosePaginationOptions,
   validateMongoId,
 } from "../../utils/helper.js";
+
+/**
+ * @param {import("express").Request} req
+ * @description Utility function which returns the pipeline stages to structure the blog post schema with calculations like, likes count, comments count, isLiked, isBookmarked etc
+ * @returns {mongoose.PipelineStage[]}
+ */
+const postCommonAggregation = (uid) => {
+  return [
+    {
+      $lookup: {
+        from: "blogcomments",
+        localField: "_id",
+        foreignField: "postId",
+        as: "comments",
+      },
+    },
+    {
+      $lookup: {
+        from: "bloglikes",
+        localField: "_id",
+        foreignField: "postId",
+        as: "likes",
+      },
+    },
+    {
+      $lookup: {
+        from: "blogbookmarks",
+        localField: "_id",
+        foreignField: "postId",
+        as: "bookmarks",
+      },
+    },
+    {
+      $lookup: {
+        from: "categories",
+        localField: "category",
+        foreignField: "_id",
+        as: "category",
+        pipeline: [
+          {
+            $project: {
+              owner: 0,
+            },
+          },
+        ],
+      },
+    },
+    {
+      $lookup: {
+        from: "bloglikes",
+        localField: "_id",
+        foreignField: "postId",
+        as: "isLiked",
+        pipeline: [
+          {
+            $match: {
+              likedBy: uid ? validateMongoId(uid) : null,
+            },
+          },
+        ],
+      },
+    },
+    {
+      $lookup: {
+        from: "blogbookmarks",
+        localField: "_id",
+        foreignField: "postId",
+        as: "isBookmarked",
+        pipeline: [
+          {
+            $match: {
+              bookmarkedBy: uid ? validateMongoId(uid) : null,
+            },
+          },
+        ],
+      },
+    },
+    {
+      $lookup: {
+        from: "userprofiles",
+        localField: "author",
+        foreignField: "owner",
+        as: "author",
+        pipeline: [
+          {
+            $lookup: {
+              from: "users",
+              localField: "owner",
+              foreignField: "_id",
+              as: "account",
+              pipeline: [
+                {
+                  $project: {
+                    avatar: 1,
+                    email: 1,
+                    username: 1,
+                  },
+                },
+              ],
+            },
+          },
+          { $addFields: { account: { $first: "$account" } } },
+        ],
+      },
+    },
+    {
+      $addFields: {
+        author: { $first: "$author" },
+        category: { $first: "$category" },
+        likes: { $size: "$likes" },
+        bookmarks: { $size: "$bookmarks" },
+        comments: { $size: "$comments" },
+        isLiked: {
+          $cond: {
+            if: {
+              $gte: [
+                {
+                  // if the isLiked key has document in it
+                  $size: "$isLiked",
+                },
+                1,
+              ],
+            },
+            then: true,
+            else: false,
+          },
+        },
+        isBookmarked: {
+          $cond: {
+            if: {
+              $gte: [
+                {
+                  // if the isBookmarked key has document in it
+                  $size: "$isBookmarked",
+                },
+                1,
+              ],
+            },
+            then: true,
+            else: false,
+          },
+        },
+      },
+    },
+  ];
+};
 
 export const addBlog = asyncHandler(async (req, res) => {
   try {
@@ -50,7 +194,7 @@ export const addBlog = asyncHandler(async (req, res) => {
   }
 });
 
-export const updateBlog = asyncHandler(async (req, res) => {
+export const updatePost = asyncHandler(async (req, res) => {
   try {
     const { title, content, description, publishStatus } = req.body;
     const coverPhotoPath = req.files?.coverPhoto?.[0]?.path;
@@ -88,7 +232,7 @@ export const updateBlog = asyncHandler(async (req, res) => {
   }
 });
 
-export const deleteBlog = asyncHandler(async (req, res) => {
+export const deletePost = asyncHandler(async (req, res) => {
   try {
     const blog = await Blog.findByIdAndDelete(req.params.pid);
     return res
@@ -107,31 +251,159 @@ export const deleteBlog = asyncHandler(async (req, res) => {
   }
 });
 
-export const getAllBlogs = asyncHandler(async (req, res) => {
+export const getAllPosts = asyncHandler(async (req, res) => {
   try {
     const limit = parseInt(req.query.limit, 10) || 10;
     const page = parseInt(req.query.page, 10) || 1;
+
+    const uid = req.user?._id;
+
     const postAggregate = Blog.aggregate([
       {
         $match: {
           status: "PUBLISHED",
+          deleted: false,
         },
       },
+      ...postCommonAggregation(uid),
+    ]);
+
+    const payload = await Blog.aggregatePaginate(
+      postAggregate,
+      getMongoosePaginationOptions({
+        limit,
+        page,
+        customLabels: {
+          totalDocs: "totalItems",
+          docs: "data",
+        },
+      })
+    );
+
+    if (!payload) {
+      return res.status(404).json(new ApiResponse(404, null, "No blog found"));
+    }
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, payload, "Blogs fetched successfully"));
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(error.statusCode || 500)
+      .json(
+        new ApiResponse(
+          error.statusCode || 500,
+          null,
+          error.message || "Internal Server Error"
+        )
+      );
+  }
+});
+
+export const getPostById = asyncHandler(async (req, res) => {
+  try {
+    const { pid } = req.params;
+    const uid = req.user?._id;
+    const blog = Blog.aggregate([
       {
-        $lookup: {
-          from: "users",
-          localField: "author",
-          foreignField: "_id",
-          as: "author",
-          pipeline: [
-            {
-              $project: {
-                password: 0,
-              },
-            },
+        $match: {
+          _id: validateMongoId(pid),
+        },
+      },
+      ...postCommonAggregation(uid),
+    ]);
+
+    const payload = await Blog.aggregatePaginate(blog, {
+      ...getMongoosePaginationOptions({
+        limit: 1,
+        page: 1,
+        customLabels: {
+          totalDocs: "totalItems",
+          docs: "data",
+        },
+      }),
+    });
+    return res
+      .status(200)
+      .json(new ApiResponse(200, payload, "Blog fetched successfully"));
+  } catch (error) {
+    return res
+      .status(error.statusCode || 500)
+      .json(
+        new ApiResponse(
+          error.statusCode || 500,
+          null,
+          error.message || "Internal Server Error"
+        )
+      );
+  }
+});
+
+/**
+ * @api {get} /users/:uid/posts Get blogs by user
+ * @apiName getPostssByUser
+ * @apiGroup Posts
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @return {Promise<void>} - A promise that resolves when the response is sent.
+ *
+ */
+export const getPostsByUser = asyncHandler(async (req, res) => {
+  try {
+    const { uid } = req.params;
+    const payload = await Blog.find({ author: uid });
+    return res
+      .status(200)
+      .json(new ApiResponse(200, payload, "Blogs fetched successfully"));
+  } catch (error) {
+    return res
+      .status(error.statusCode || 500)
+      .json(
+        new ApiResponse(
+          error.statusCode || 500,
+          null,
+          error.message || "Internal Server Error"
+        )
+      );
+  }
+});
+
+/**
+ * Search blog
+ * @api {get} /search Search blog
+ * @apiName Search
+ * @apiGroup Blog
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @return {Promise<void>} - A promise that resolves when the response is sent.
+ *
+ */
+export const search = asyncHandler(async (req, res) => {
+  try {
+    const { q } = req.query;
+    const limit = parseInt(req.query.limit, 10) || 10;
+    const page = parseInt(req.query.page, 10) || 1;
+    const uid = req.user?._id;
+    if (!q) {
+      return res
+        .status(400)
+        .json(new ApiResponse(400, null, "Search query is required"));
+    }
+
+    const postAggregate = Blog.aggregate([
+      {
+        $match: {
+          status: "PUBLISHED",
+          deleted: false,
+          $or: [
+            { title: { $regex: q, $options: "i" } },
+            { content: { $regex: q, $options: "i" } },
           ],
         },
       },
+      ...postCommonAggregation(uid),
     ]);
 
     const payload = await Blog.aggregatePaginate(postAggregate, {
@@ -165,39 +437,23 @@ export const getAllBlogs = asyncHandler(async (req, res) => {
   }
 });
 
-export const getBlogById = asyncHandler(async (req, res) => {
+/**
+ * @api {get} /get/d/:date/posts Get Posts By Date
+ * @apiName getPostsByDate
+ * @apiGroup Posts
+ *
+ * @apiParam {String} date Date in format YYYY-MM-DD
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @return {Promise<void>} - A promise that resolves when the response is sent.
+ */
+export const getPostsByDate = asyncHandler(async (req, res) => {
   try {
-    const { pid } = req.params;
-    const blog = await Blog.aggregate([
-      {
-        $match: {
-          _id: validateMongoId(pid),
-        },
-      },
-      {
-        $lookup: {
-          from: "users",
-          localField: "author",
-          foreignField: "_id",
-          as: "author",
-          pipeline: [
-            {
-              $project: {
-                password: 0,
-              },
-            },
-          ],
-        },
-      },
-    ]);
-
-    // console.log(blogAggregate);
-    // const blog = await Blog.findById(req.params.pid)
-    //   .populate({ path: "author", select: "_id username avatar" })
-    //   .exec();
+    const { date } = req.params;
+    const payload = await Blog.find({ publishedAt: { $gte: date } });
     return res
       .status(200)
-      .json(new ApiResponse(200, blog, "Blog fetched successfully"));
+      .json(new ApiResponse(200, payload, "Blogs fetched successfully"));
   } catch (error) {
     return res
       .status(error.statusCode || 500)
@@ -211,41 +467,25 @@ export const getBlogById = asyncHandler(async (req, res) => {
   }
 });
 
-export const addComment = asyncHandler(async (req, res) => {
+/**
+ *
+ *
+ * @api {get} /get/:category/posts Get Posts By Category
+ * @apiName getPostsByCategory
+ * @apiGroup Posts
+ *
+ * @apiParam {String} category Category
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @return {Promise<void>} - A promise that resolves when the response is sent.
+ */
+export const getPostsByCategory = asyncHandler(async (req, res) => {
   try {
-    const { content, author, postId } = req.body;
-    const newComment = await BlogComment.create({
-      content,
-      author,
-      postId,
-    });
-    return res
-      .status(201)
-      .json(new ApiResponse(201, newComment, "Comment created successfully"));
-  } catch (error) {
-    return res
-      .status(error.statusCode || 500)
-      .json(
-        new ApiResponse(
-          error.statusCode || 500,
-          null,
-          error.message || "Internal Server Error"
-        )
-      );
-  }
-});
-
-export const getAllPostComments = asyncHandler(async (req, res) => {
-  try {
-    const comments = await BlogComment.find({ postId: req.params.pid })
-      .populate({
-        path: "author",
-        select: "_id username avatar",
-      })
-      .exec();
+    const { category } = req.params;
+    const payload = await Blog.find({ category });
     return res
       .status(200)
-      .json(new ApiResponse(200, comments, "Comments fetched successfully"));
+      .json(new ApiResponse(200, payload, "Blogs fetched successfully"));
   } catch (error) {
     return res
       .status(error.statusCode || 500)
@@ -259,14 +499,49 @@ export const getAllPostComments = asyncHandler(async (req, res) => {
   }
 });
 
-export const getAllCategories = asyncHandler(async (req, res) => {
+/**
+ *
+ *
+ * @api {get} /get/:username/posts Get Posts By Username
+ * @apiName getPostsByUsername
+ * @apiGroup Posts
+ *
+ * @apiParam {String} username Username
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @return {Promise<void>} - A promise that resolves when the response is sent.
+ */
+export const getPostsByUsername = asyncHandler(async (req, res) => {
   try {
-    const categories = await Category.find().exec();
+    const { username } = req.params;
+    const payload = await Blog.find({ author: username });
     return res
       .status(200)
-      .json(
-        new ApiResponse(200, categories, "Categories fetched successfully")
-      );
+      .json(new ApiResponse(200, payload, "Blogs fetched successfully"));
+  } catch (error) {
+    return res.status(error.statusCode || 500).json();
+  }
+});
+
+/**
+ *
+ *
+ * @api {get} /get/t/:tag/posts Get Posts By Tag
+ * @apiName getPostsByTag
+ * @apiGroup Posts
+ *
+ * @apiParam {String} tag Tag
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @return {Promise<void>} - A promise that resolves when the response is sent.
+ */
+export const getPostsByTag = asyncHandler(async (req, res) => {
+  try {
+    const { tag } = req.params;
+    const payload = await Blog.find({ tags: tag });
+    return res
+      .status(200)
+      .json(new ApiResponse(200, payload, "Blogs fetched successfully"));
   } catch (error) {
     return res
       .status(error.statusCode || 500)
@@ -280,59 +555,136 @@ export const getAllCategories = asyncHandler(async (req, res) => {
   }
 });
 
-export const search = asyncHandler(async (req, res) => {
-  try {
-    const { q } = req.query;
-    const limit = parseInt(req.query.limit, 10) || 10;
-    const page = parseInt(req.query.page, 10) || 1;
-    if (!q) {
-      return res
-        .status(400)
-        .json(new ApiResponse(400, null, "Search query is required"));
-    }
+/**
+ *
+ * @api {delete} /remove/image/:postId/:imageId Remove Post Image
+ * @apiName removePostImage
+ * @apiGroup Posts
+ *
+ * @apiParam {String} postId Post Id
+ * @apiParam {String} imageId Image Id
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @return {Promise<void>} - A promise that resolves when the response is sent.
+ *
+ */
+export const removePostImage = asyncHandler(async (req, res) => {
+  const { postId, imageId } = req.params;
+  const payload = await Blog.findById(postId);
+  if (!payload) {
+    return res
+      .status(404)
+      .json(new ApiResponse(404, null, "No blog found with this id"));
+  }
+  const imageIndex = payload.images.indexOf(imageId);
+  if (imageIndex === -1) {
+    return res
+      .status(404)
+      .json(new ApiResponse(404, null, "No image found with this id"));
+  }
+  payload.images.splice(imageIndex, 1);
+  await payload.save();
+  return res
+    .status(200)
+    .json(new ApiResponse(200, payload, "Image removed successfully"));
+});
 
-    const postAggregate = await Blog.aggregate([
+/**
+ * @api {get} /recent/5/posts Get Recent Posts
+ * @apiName getRecentPosts
+ * @apiGroup Posts
+ *
+ * @apiParam {Number} limit Limit
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @return {Promise<void>} - A promise that resolves when the response is sent.
+ */
+export const getRecentPosts = asyncHandler(async (req, res) => {
+  try {
+    const x = parseInt(req.params.x, 10) || 5;
+    const uid = req.user?._id;
+    const postAggregate = Blog.aggregate([
       {
         $match: {
           status: "PUBLISHED",
-          $or: [
-            { title: { $regex: q, $options: "i" } },
-            { content: { $regex: q, $options: "i" } },
-          ],
+          deleted: false,
         },
       },
+      ...postCommonAggregation(uid),
       {
-        $lookup: {
-          from: "users",
-          localField: "author",
-          foreignField: "_id",
-          as: "author",
-          pipeline: [
-            {
-              $project: {
-                password: 0,
-              },
-            },
-          ],
+        $sort: {
+          createdAt: -1,
         },
       },
     ]);
 
     const payload = await Blog.aggregatePaginate(postAggregate, {
       ...getMongoosePaginationOptions({
-        limit,
-        page,
+        limit: x,
+        page: 1,
         customLabels: {
           totalDocs: "totalItems",
           docs: "data",
         },
       }),
     });
+    return res
+      .status(200)
+      .json(new ApiResponse(200, payload, "Blogs fetched successfully"));
+  } catch (error) {
+    return res
+      .status(error.statusCode || 500)
+      .json(
+        new ApiResponse(
+          error.statusCode || 500,
+          null,
+          error.message || "Internal Server Error"
+        )
+      );
+  }
+});
 
-    if (!payload) {
-      return res.status(404).json(new ApiResponse(404, null, "No blog found"));
-    }
+/**
+ * @api {get} /trending/5/posts Get Popular Posts
+ * @apiName getPopularPosts
+ * @apiGroup Posts
+ *
+ * @apiParam {Number} limit Limit
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @return {Promise<void>} - A promise that resolves when the response is sent.
+ */
+export const getTrendingPosts = asyncHandler(async (req, res) => {
+  try {
+    const x = parseInt(req.params.x, 10) || 5;
+    const uid = req.user?._id;
+    const postAggregate = Blog.aggregate([
+      {
+        $match: {
+          status: "PUBLISHED",
+          deleted: false,
+        },
+      },
+      ...postCommonAggregation(uid),
+      {
+        $sort: {
+          likes: -1,
+          bookmarks: -1,
+        },
+      },
+    ]);
 
+    const payload = await Blog.aggregatePaginate(
+      postAggregate,
+      getMongoosePaginationOptions({
+        limit: x,
+        page: 1,
+        customLabels: {
+          totalDocs: "totalItems",
+          docs: "data",
+        },
+      })
+    );
     return res
       .status(200)
       .json(new ApiResponse(200, payload, "Blogs fetched successfully"));
