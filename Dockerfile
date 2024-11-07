@@ -1,8 +1,8 @@
 FROM node:18
 
-RUN mkdir -p /usr/src/pocapi && chown -R node:node /usr/src/pocapi
+RUN mkdir -p /usr/express_api_v1 && chown -R node:node /usr/express_api_v1
 
-WORKDIR /usr/src/pocapi
+WORKDIR /usr/express_api_v1
 
 # Copy package json and yarn lock only to optimise the image building
 COPY package.json ./

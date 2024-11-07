@@ -3,6 +3,8 @@ import { UserRolesEnum } from "../../constants.js";
 import {
   createCategory,
   getAllCategories,
+  getAllUsers,
+  getAllPosts,
 } from "../../controllers/blog-app/admin.controllers.js";
 import {
   verifyJWT,
@@ -25,6 +27,14 @@ router
 //     mongoIdPathVariableValidator("cid"),
 //     addCategory
 //   );
+
+router
+  .route("/users/all")
+  .get(verifyJWT, verifyPermission([UserRolesEnum.ADMIN]), getAllUsers);
+
+router
+  .route("/posts/all")
+  .get(verifyJWT, verifyPermission([UserRolesEnum.ADMIN]), getAllPosts);
 
 router
   .route("/category/all")

@@ -1,10 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
+import { uploadToCloudinary } from "../../libs/cloudinary.js";
 import { VideoCategory } from "../../models/video-app/category.models.js";
 import { Video } from "../../models/video-app/video.models.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
-import { uploadToCloudinary } from "../../utils/cloudinary.js";
 import { convertToDASH, convertToHLS } from "../../utils/converter.js";
 
 /**

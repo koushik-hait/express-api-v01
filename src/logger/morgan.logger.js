@@ -4,12 +4,14 @@ import logger from "./winston.logger.js";
 const stream = {
   // Use the http severity
   write: (message) => {
+    const parts = message.trim().split(" ");
+    // console.log(parts);
     const logObject = {
-      remoteAddr: message.trim().split(" ")[0],
-      method: message.trim().split(" ")[1],
-      url: message.trim().split(" ")[2],
-      status: message.trim().split(" ")[3],
-      responseTime: message.trim().split(" ")[4],
+      remoteAddr: parts[0],
+      method: parts[1],
+      url: parts[2],
+      status: parts[3],
+      responseTime: parts[4],
     };
     logger.info(JSON.stringify(logObject));
   },
@@ -17,9 +19,10 @@ const stream = {
 
 const skip = () => {
   const env = process.env.NODE_ENV || "development";
-  return env !== "development";
+  return !["development", "staging"].includes(env);
 };
-const morganFormat = ":remote-addr :method :url :status - :response-time ms";
-const morganMiddleware = morgan(morganFormat, { stream });
+const morganFormat = ":remote-addr :method :url :status :response-time";
+
+const morganMiddleware = morgan(morganFormat, { stream, skip });
 
 export default morganMiddleware;

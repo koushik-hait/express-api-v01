@@ -9,6 +9,7 @@ import {
   verifyJWT,
 } from "../../middlewares/auth.middleware.js";
 import { mongoIdPathVariableValidator } from "../../validators/mongodb.validators.js";
+import { validate } from "../../validators/validate.js";
 
 const router = Router();
 
@@ -17,6 +18,7 @@ router
   .post(
     verifyJWT,
     mongoIdPathVariableValidator("toBeFollowedUserId"),
+    validate,
     followUnFollowUser
   );
 

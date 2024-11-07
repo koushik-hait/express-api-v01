@@ -26,6 +26,8 @@ const likeSchema = new Schema(
   { timestamps: true }
 );
 
+likeSchema.index({ postId: 1, likedBy: 1 }, { unique: true });
+
 likeSchema.plugin(mongooseAggregatePaginate);
 
 export const BlogLike = mongoose.model("BlogLike", likeSchema);

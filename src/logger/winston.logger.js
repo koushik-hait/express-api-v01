@@ -51,6 +51,7 @@ const winstonTransports = [
   new transports.Console({
     format: logFormat,
   }),
+  new transports.File({ filename: "public/logs/error.log", level: "error" }),
   new transports.File({ filename: "public/logs/app.log" }),
 ];
 
@@ -61,6 +62,7 @@ const logger = createLogger({
   levels,
   format: combine(colorize(), timestamp(), json()),
   transports: winstonTransports,
+  defaultMeta: { service: "user-service" },
 });
 
 export default logger;

@@ -1,6 +1,6 @@
+import { uploadToCloudinary } from "../libs/cloudinary.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import { uploadToCloudinary } from "../utils/cloudinary.js";
 
 export const uploadImage = async (req, res) => {
   try {

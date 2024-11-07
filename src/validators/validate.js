@@ -1,4 +1,5 @@
 import { validationResult } from "express-validator";
+import { emitSocketEvent } from "../libs/socket/index.js";
 import { errorHandler } from "../middlewares/error.middleware.js";
 import { ApiError } from "../utils/ApiError.js";
 /**
@@ -12,8 +13,8 @@ import { ApiError } from "../utils/ApiError.js";
  * If yes then it structures them and throws an {@link ApiError} which forwards the error to the {@link errorHandler} middleware which throws a uniform response at a single place
  *
  */
-export const validate = (req, res, next) => {
-  console.log(req.body);
+export const validate = async (req, res, next) => {
+  // console.log(req.body);
   // check for validation errors
   const errors = validationResult(req);
   if (errors.isEmpty()) {
@@ -21,6 +22,11 @@ export const validate = (req, res, next) => {
   }
   const extractedErrors = [];
   errors.array().map((err) => extractedErrors.push({ [err.path]: err.msg }));
+  if (req.user?._id) {
+    emitSocketEvent(req, req.user?._id.toString(), "notification", {
+      message: "Received data is not valid.",
+    });
+  }
 
   // 422: Unprocessable Entity
   throw new ApiError(422, "Received data is not valid", extractedErrors);

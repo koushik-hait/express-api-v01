@@ -21,6 +21,8 @@ const commentSchema = new Schema(
   { timestamps: true }
 );
 
+commentSchema.index({ postId: 1, author: 1 }, { unique: true });
+
 commentSchema.plugin(mongooseAggregatePaginate);
 
 export const BlogComment = mongoose.model("BlogComment", commentSchema);

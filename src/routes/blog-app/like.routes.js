@@ -10,7 +10,7 @@ import { validate } from "../../validators/validate.js";
 const router = Router();
 
 router
-  .route("/post/:pid")
+  .route("/p/:pid")
   .post(
     verifyJWT,
     mongoIdPathVariableValidator("pid"),
@@ -19,7 +19,7 @@ router
   );
 
 router
-  .route("/comment/:cid")
+  .route("/c/:cid")
   .post(
     verifyJWT,
     mongoIdPathVariableValidator("cid"),

@@ -14,7 +14,10 @@ import {
   search,
   updatePost,
 } from "../../controllers/blog-app/post.controllers.js";
-import { verifyJWT } from "../../middlewares/auth.middleware.js";
+import {
+  verifyJWT,
+  getLoggedInUserOrIgnore,
+} from "../../middlewares/auth.middleware.js";
 import { upload } from "../../middlewares/multer.middleware.js";
 import { mongoIdPathVariableValidator } from "../../validators/mongodb.validators.js";
 
@@ -34,8 +37,8 @@ router.route("/search").get(search);
 //getPostsByUser /get/my/posts
 router.route("/my/posts").get(verifyJWT, getPostsByUser);
 //getPostsByDate /get/d/:date/posts
-router.route("/top/:x/trending").get(verifyJWT, getTrendingPosts);
-router.route("/top/:x/recent").get(verifyJWT, getRecentPosts);
+router.route("/top/:x/trending").get(getLoggedInUserOrIgnore, getTrendingPosts);
+router.route("/top/:x/recent").get(getLoggedInUserOrIgnore, getRecentPosts);
 router.route("/:username/posts").get(verifyJWT, getPostsByUsername);
 router.route("/t/:tag/posts").get(verifyJWT, getPostsByTag);
 router.route("/remove/image/:imageId/:pid").get(verifyJWT, getPostsByTag);

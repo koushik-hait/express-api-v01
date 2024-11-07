@@ -206,6 +206,7 @@ export const updateCoverImage = asyncHandler(async (req, res) => {
  */
 export const getTop5Users = asyncHandler(async (req, res) => {
   try {
+    const currentUserId = req.user._id;
     const useraggregate = UserProfile.aggregate([
       { $match: {} },
       {
@@ -233,10 +234,40 @@ export const getTop5Users = asyncHandler(async (req, res) => {
         },
       },
       {
+        $lookup: {
+          from: "blogfollows",
+          localField: "owner",
+          foreignField: "followeeId",
+          as: "isFollowing",
+          pipeline: [
+            {
+              $match: {
+                followerId: validateMongoId(currentUserId),
+              },
+            },
+          ],
+        },
+      },
+      {
         $addFields: {
           account: { $first: "$account" },
           followers: { $size: "$followers" },
           posts: { $size: "$posts" },
+          isFollowing: {
+            $cond: {
+              if: {
+                $gte: [
+                  {
+                    // if the isFollowing key has document in it
+                    $size: "$isFollowing",
+                  },
+                  1,
+                ],
+              },
+              then: true,
+              else: false,
+            },
+          },
         },
       },
       { $sort: { followers: -1, posts: -1 } },

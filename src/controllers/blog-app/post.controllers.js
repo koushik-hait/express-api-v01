@@ -1,9 +1,11 @@
-import { v4 as uuidv4 } from "uuid";
+// import { v4 as uuidv4 } from "uuid";
+// import { deleteCached, getCached, setCached } from "../../db/redis-config.js";
+import { uploadToCloudinary } from "../../libs/cloudinary.js";
 import { BlogPost as Blog } from "../../models/blog-app/post.models.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
-import { uploadToCloudinary } from "../../utils/cloudinary.js";
+// import { postAggregator } from "../../utils/blog.helpers.js";
 import {
   getMongoosePaginationOptions,
   validateMongoId,
@@ -258,6 +260,22 @@ export const getAllPosts = asyncHandler(async (req, res) => {
 
     const uid = req.user?._id;
 
+    // const cachedPost = await getCached(
+    //   `/api/v1/blog/all?page=${page}&limit=10`
+    // );
+
+    // if (cachedPost) {
+    //   return res
+    //     .status(200)
+    //     .json(
+    //       new ApiResponse(
+    //         200,
+    //         cachedPost,
+    //         "Blogs fetched successfully from Cached data"
+    //       )
+    //     );
+    // }
+
     const postAggregate = Blog.aggregate([
       {
         $match: {
@@ -265,6 +283,7 @@ export const getAllPosts = asyncHandler(async (req, res) => {
           deleted: false,
         },
       },
+      // ...postAggregator(uid),
       ...postCommonAggregation(uid),
     ]);
 
@@ -283,6 +302,8 @@ export const getAllPosts = asyncHandler(async (req, res) => {
     if (!payload) {
       return res.status(404).json(new ApiResponse(404, null, "No blog found"));
     }
+
+    // await setCached(`/api/v1/blog/all?page=${page}&limit=10`, payload);
 
     return res
       .status(200)

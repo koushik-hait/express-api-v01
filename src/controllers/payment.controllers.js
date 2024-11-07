@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
+import { BraintreeGateway } from "../libs/braintree.js";
+import { stripePay } from "../libs/stripe/stripePay.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import { BraintreeGateway } from "../utils/braintree.js";
-import { stripePay } from "../utils/stripePay.js";
 
 export const getClientToken = async (req, res) => {
   const customerId = "CUS-" + uuidv4();

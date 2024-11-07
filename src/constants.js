@@ -122,6 +122,7 @@ export const MAXIMUM_SUB_IMAGE_COUNT = 4;
 export const MAXIMUM_SOCIAL_POST_IMAGE_COUNT = 6;
 
 export const DB_NAME = "poc_app";
+export const ROOT_S3_BUCKET_DIR = "Imaginary";
 
 export const paypalBaseUrl = {
   sandbox: "https://api-m.sandbox.paypal.com",

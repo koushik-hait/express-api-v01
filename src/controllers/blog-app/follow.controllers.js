@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
+import { emitSocketEvent } from "../../libs/socket/index.js";
 import { User } from "../../models/auth/user.models.js";
 import { BlogFollow } from "../../models/blog-app/follow.models.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
-import { uploadToCloudinary } from "../../utils/cloudinary.js";
 import {
   getMongoosePaginationOptions,
   validateMongoId,
@@ -13,8 +13,11 @@ import {
 const followUnFollowUser = asyncHandler(async (req, res) => {
   const { toBeFollowedUserId } = req.params;
 
+  // console.log(toBeFollowedUserId);
+
   // See if user that is being followed exist
-  const toBeFollowed = await User.findById(toBeFollowedUserId);
+  const toBeFollowed = await User.findById({ _id: toBeFollowedUserId });
+  console.log(toBeFollowed);
 
   if (!toBeFollowed) {
     throw new ApiError(404, "User does not exist");
@@ -37,6 +40,11 @@ const followUnFollowUser = asyncHandler(async (req, res) => {
       followerId: req.user._id,
       followeeId: toBeFollowed._id,
     });
+    emitSocketEvent(req, toBeFollowedUserId, "notification", {
+      type: "unfollow",
+      message: `You are Unfollowed by ${req?.user?.username}`,
+      timestamp: new Date(),
+    });
     return res.status(200).json(
       new ApiResponse(
         200,
@@ -51,6 +59,11 @@ const followUnFollowUser = asyncHandler(async (req, res) => {
     await BlogFollow.create({
       followerId: req.user._id,
       followeeId: toBeFollowed._id,
+    });
+    emitSocketEvent(req, toBeFollowedUserId, "notification", {
+      type: "follow",
+      message: `You are followed by ${req?.user?.username}`,
+      timestamp: new Date(),
     });
     return res.status(200).json(
       new ApiResponse(

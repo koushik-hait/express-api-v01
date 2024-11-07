@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import { httpServer } from "./app.js";
 import connectDB from "./db/index.js";
+// import { connectToRedis } from "./db/redis-config.js";
 
 dotenv.config({
   path: "./.env",
@@ -26,6 +27,7 @@ const startServer = () => {
 if (majorNodeVersion >= 14) {
   try {
     await connectDB();
+    // await connectToRedis();
     startServer();
   } catch (err) {
     console.log("Mongo db connect error: ", err);

@@ -10,7 +10,6 @@ const postSchema = new Schema(
       required: true,
       // maxlength: [200, "Title should not exceed 200 characters"],
       // minlength: [3, "Title should not be less than 3 characters"],
-      index: true,
     },
     description: {
       type: String,
@@ -53,9 +52,11 @@ const postSchema = new Schema(
     },
     //TODO: Add owner and tags, category fields here
   },
-  { timestamps: true },
-  { autoIndex: false }
+  { timestamps: true }
 );
+
+postSchema.index({ title: "text", content: "text" });
+postSchema.index({ createdAt: -1 });
 
 postSchema.plugin(mongooseAggregatePaginate);
 

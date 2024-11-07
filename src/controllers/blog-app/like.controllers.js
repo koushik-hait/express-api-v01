@@ -5,7 +5,6 @@ import { BlogPost } from "../../models/blog-app/post.models.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
-import { uploadToCloudinary } from "../../utils/cloudinary.js";
 import {
   getMongoosePaginationOptions,
   validateMongoId,
@@ -23,21 +22,24 @@ const likeDislikePost = asyncHandler(async (req, res) => {
 
   // See if user has already liked the post
   const isAlreadyLiked = await BlogLike.findOne({
-    pid,
+    postId: pid,
     likedBy: req.user?._id,
   });
 
   if (isAlreadyLiked) {
     // if already liked, dislike it by removing the record from the DB
     await BlogLike.findOneAndDelete({
-      pid,
+      postId: pid,
       likedBy: req.user?._id,
     });
+    const likeCount = await BlogLike.find({ postId: pid }).countDocuments();
+
     return res.status(200).json(
       new ApiResponse(
         200,
         {
           isLiked: false,
+          likes: likeCount,
         },
         "Unliked successfully"
       )
@@ -45,14 +47,16 @@ const likeDislikePost = asyncHandler(async (req, res) => {
   } else {
     // if not liked, like it by adding the record from the DB
     await BlogLike.create({
-      pid,
+      postId: pid,
       likedBy: req.user?._id,
     });
+    const likeCount = await BlogLike.find({ postId: pid }).countDocuments();
     return res.status(200).json(
       new ApiResponse(
         200,
         {
           isLiked: true,
+          likes: likeCount,
         },
         "Liked successfully"
       )
@@ -72,21 +76,23 @@ const likeDislikeComment = asyncHandler(async (req, res) => {
 
   // See if user has already liked the comment
   const isAlreadyLiked = await BlogLike.findOne({
-    cid,
+    commentId: cid,
     likedBy: req.user?._id,
   });
 
   if (isAlreadyLiked) {
     // if already liked, dislike it by removing the record from the DB
     await BlogLike.findOneAndDelete({
-      cid,
+      commentId: cid,
       likedBy: req.user?._id,
     });
+    const likeCount = await BlogLike.find({ commentId: cid }).countDocuments();
     return res.status(200).json(
       new ApiResponse(
         200,
         {
           isLiked: false,
+          likes: likeCount,
         },
         "Unliked successfully"
       )
@@ -94,14 +100,17 @@ const likeDislikeComment = asyncHandler(async (req, res) => {
   } else {
     // if not liked, like it by adding the record from the DB
     await BlogLike.create({
-      cid,
+      commentId: cid,
       likedBy: req.user?._id,
     });
+
+    const likeCount = await BlogLike.find({ commentId: cid }).countDocuments();
     return res.status(200).json(
       new ApiResponse(
         200,
         {
           isLiked: true,
+          likes: likeCount,
         },
         "Liked successfully"
       )

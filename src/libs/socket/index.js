@@ -5,37 +5,16 @@ import { AvailableChatEvents, ChatEventEnum } from "../../constants.js";
 import { User } from "../../models/auth/user.models.js";
 import { ApiError } from "../../utils/ApiError.js";
 
-/**
- * @description This function is responsible to allow user to join the chat represented by chatId (chatId). event happens when user switches between the chats
- * @param {Socket<import("socket.io/dist/typed-events").DefaultEventsMap, import("socket.io/dist/typed-events").DefaultEventsMap, import("socket.io/dist/typed-events").DefaultEventsMap, any>} socket
- */
-const mountJoinChatEvent = (socket) => {
-  socket.on(ChatEventEnum.JOIN_CHAT_EVENT, (chatId) => {
-    console.log(`User joined the chat 🤝. chatId: `, chatId);
-    // joining the room with the chatId will allow specific events to be fired where we don't bother about the users like typing events
+const mountReadingPostEvent = (socket) => {
+  socket.on("READING_POST", (postId) => {
+    console.log(
+      `User ${socket?.user?._id} reading the post 🤝. postId: `,
+      postId
+    );
+    // joining the room with the postId will allow specific events to be fired where we don't bother about the users like typing events
     // E.g. When user types we don't want to emit that event to specific participant.
     // We want to just emit that to the chat where the typing is happening
-    socket.join(chatId);
-  });
-};
-
-/**
- * @description This function is responsible to emit the typing event to the other participants of the chat
- * @param {Socket<import("socket.io/dist/typed-events").DefaultEventsMap, import("socket.io/dist/typed-events").DefaultEventsMap, import("socket.io/dist/typed-events").DefaultEventsMap, any>} socket
- */
-const mountParticipantTypingEvent = (socket) => {
-  socket.on(ChatEventEnum.TYPING_EVENT, (chatId) => {
-    socket.in(chatId).emit(ChatEventEnum.TYPING_EVENT, chatId);
-  });
-};
-
-/**
- * @description This function is responsible to emit the stopped typing event to the other participants of the chat
- * @param {Socket<import("socket.io/dist/typed-events").DefaultEventsMap, import("socket.io/dist/typed-events").DefaultEventsMap, import("socket.io/dist/typed-events").DefaultEventsMap, any>} socket
- */
-const mountParticipantStoppedTypingEvent = (socket) => {
-  socket.on(ChatEventEnum.STOP_TYPING_EVENT, (chatId) => {
-    socket.in(chatId).emit(ChatEventEnum.STOP_TYPING_EVENT, chatId);
+    socket.join(postId);
   });
 };
 
@@ -58,6 +37,7 @@ const initializeSocketIO = (io) => {
 
       if (!token) {
         // Token is required for the socket to work
+        console.log("Token is required for the socket to work");
         throw new ApiError(401, "Un-authorized handshake. Token is missing");
       }
 
@@ -77,15 +57,12 @@ const initializeSocketIO = (io) => {
       // still we want to emit some socket events to the user.
       // so that the client can catch the event and show the notifications.
       socket.join(user._id.toString());
-      socket.emit(ChatEventEnum.CONNECTED_EVENT); // emit the connected event so that client is aware
+      socket.emit("connected"); // emit the connected event so that client is aware
       console.log("User connected 🗼. userId: ", user._id.toString());
 
       // Common events that needs to be mounted on the initialization
-      mountJoinChatEvent(socket);
-      mountParticipantTypingEvent(socket);
-      mountParticipantStoppedTypingEvent(socket);
-
-      socket.on(ChatEventEnum.DISCONNECT_EVENT, () => {
+      mountReadingPostEvent(socket);
+      socket.on("disconnect", () => {
         console.log("user has disconnected 🚫. userId: " + socket.user?._id);
         if (socket.user?._id) {
           socket.leave(socket.user._id);
@@ -93,7 +70,26 @@ const initializeSocketIO = (io) => {
       });
     } catch (error) {
       socket.emit(
-        ChatEventEnum.SOCKET_ERROR_EVENT,
+        "socketError",
+        error?.message || "Something went wrong while connecting to the socket."
+      );
+    }
+  });
+};
+
+const initSocketIO = (io) => {
+  return io.on("connection", async (socket) => {
+    try {
+      console.log("socket connected");
+      socket.emit("connected");
+
+      socket.on("disconnect", () => {
+        console.log("disconnected 🚫. userId: ");
+      });
+    } catch (error) {
+      console.log(error);
+      socket.emit(
+        "socketError",
         error?.message || "Something went wrong while connecting to the socket."
       );
     }
@@ -109,7 +105,11 @@ const initializeSocketIO = (io) => {
  * @description Utility function responsible to abstract the logic of socket emission via the io instance
  */
 const emitSocketEvent = (req, roomId, event, payload) => {
-  req.app.get("io").in(roomId).emit(event, payload);
+  req.app.get("io").to(roomId).emit(event, payload);
 };
 
-export { emitSocketEvent, initializeSocketIO };
+export const ioInstance = (req) => {
+  return req.app.get("io");
+};
+
+export { emitSocketEvent, initSocketIO, initializeSocketIO };

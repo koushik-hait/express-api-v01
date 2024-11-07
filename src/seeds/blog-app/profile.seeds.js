@@ -7,10 +7,17 @@ import { User } from "../../models/auth/user.models.js";
 import { genEncryptedPassword } from "../../utils/helper.js";
 import { USERS_COUNT } from "../_constants.js";
 
+const ENV = process.env.NODE_ENV || "development";
+
+const db_url =
+  ENV === "development"
+    ? "mongodb://localhost:27017/poc_app"
+    : "mongodb+srv://mongo_user:mongouser549344@cluster0.vki8qxl.mongodb.net/poc_app";
+
 const seedUserProfiles = async () => {
   try {
     await mongoose.connect(
-      `mongodb+srv://mongo_user:mongouser549344@cluster0.vki8qxl.mongodb.net/poc_app`,
+      `${db_url}`,
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,

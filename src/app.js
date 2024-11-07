@@ -1,11 +1,13 @@
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
+import compression from "express-compression";
 import { rateLimit } from "express-rate-limit";
-import session from "express-session";
+import helmet from "helmet";
+// import session from "express-session";
 import fs from "fs";
 import { createServer } from "http";
-import passport from "passport";
+// import passport from "passport";
 import path from "path";
 import requestIp from "request-ip";
 import { Server } from "socket.io";
@@ -14,9 +16,9 @@ import { fileURLToPath } from "url";
 import YAML from "yaml";
 import { DB_NAME } from "./constants.js";
 import { dbInstance } from "./db/index.js";
-import { initializeSocketIO } from "./libs/socket/index.js";
+import { initializeSocketIO, initSocketIO } from "./libs/socket/index.js";
 import morganMiddleware from "./logger/morgan.logger.js";
-import { upload } from "./middlewares/multer.middleware.js";
+// import { upload } from "./middlewares/multer.middleware.js";
 import { ApiError } from "./utils/ApiError.js";
 import { ApiResponse } from "./utils/ApiResponse.js";
 
@@ -51,6 +53,8 @@ app.use(
   })
 );
 
+app.use(compression()); //zlib,gzip,brotli, deflate, zstandard compression config
+
 app.use(requestIp.mw());
 
 // Rate limiter to avoid misuse of the service and avoid cost spikes
@@ -79,6 +83,8 @@ app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use(express.static("public")); // configure static file to save images locally
 app.use(cookieParser());
+// Use Helmet!
+app.use(helmet());
 
 // required for passport
 // app.use(
@@ -104,6 +110,7 @@ import blogLikeRoute from "./routes/blog-app/like.routes.js";
 import blogPostRoute from "./routes/blog-app/post.routes.js";
 import blogProfileRoute from "./routes/blog-app/profile.routes.js";
 import healthcheckRouter from "./routes/healthcheck.routes.js";
+import imageRouter from "./routes/image-app/image.routes.js";
 import paymentRoute from "./routes/payment.routes.js";
 import portfolioContactRoute from "./routes/portfolio-cms/contact.routes.js"; //portfolio-cms
 import publicRouter from "./routes/public.routes.js";
@@ -117,8 +124,8 @@ app.use("/api/v1/public", publicRouter);
 //user api routes
 app.use("/api/v1/user", userRouter);
 //video-app api routes
-app.use("/api/v1/video", videoRouter);
-app.use("/api/v1/video/admin", videoAdminRoute);
+app.use("/api/v1/v", videoRouter);
+app.use("/api/v1/v/admin", videoAdminRoute);
 //payment api routes
 app.use("/api/v1/payment", paymentRoute);
 //blog-app api routes
@@ -131,11 +138,14 @@ app.use("/api/v1/blog/follow", blogFollowRoute);
 app.use("/api/v1/blog/bookmark", blogBookmarkRoute);
 app.use("/api/v1/blog/admin", blogAdminRoute);
 //portfolio-cms api routes
-app.use("/api/v1/portfolio/", portfolioContactRoute);
+app.use("/api/v1/portfolio", portfolioContactRoute);
+//image-app api routes
+app.use("/api/v1/i", imageRouter);
 
 import { avoidInProduction } from "./middlewares/auth.middleware.js";
 
 initializeSocketIO(io);
+// initSocketIO(io);
 
 // ! 🚫 Danger Zone
 app.delete("/api/v1/reset-db", avoidInProduction, async (req, res) => {

@@ -115,11 +115,12 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 const loginUser = asyncHandler(async (req, res) => {
+  //receive credential form req object validated by express-validator middleware
   const { email, username, password } = req.body;
 
-  if (!username && !email) {
-    throw new ApiError(400, "Username or email is required");
-  }
+  // if (!username && !email) {
+  //   throw new ApiError(400, "Username or email is required");
+  // }
 
   const user = await User.findOne({
     $or: [{ username }, { email }],
@@ -345,68 +346,72 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 });
 
 const forgotPasswordRequest = asyncHandler(async (req, res) => {
-  const { email } = req.body;
+  try {
+    const { email } = req.body;
 
-  // Get email from the client and check if user exists
-  const user = await User.findOne({ email });
+    // Get email from the client and check if user exists
+    const user = await User.findOne({ email });
 
-  if (!user) {
-    throw new ApiError(404, "User does not exists", []);
-  }
+    if (!user) {
+      throw new ApiError(404, "User does not exists", []);
+    }
 
-  // Generate a temporary token
-  const { unHashedToken, hashedToken, tokenExpiry } =
-    user.generateTemporaryToken(); // generate password reset creds
+    // Generate a temporary token
+    const { unHashedToken, hashedToken, tokenExpiry } =
+      user.generateTemporaryToken(); // generate password reset creds
 
-  // save the hashed version a of the token and expiry in the DB
-  user.forgotPasswordToken = hashedToken;
-  user.forgotPasswordExpiry = tokenExpiry;
-  await user.save({ validateBeforeSave: false });
+    // save the hashed version a of the token and expiry in the DB
+    user.forgotPasswordToken = hashedToken;
+    user.forgotPasswordExpiry = tokenExpiry;
+    await user.save({ validateBeforeSave: false });
 
-  // Send mail with the password reset link. It should be the link of the frontend url with token
-  await sendEmail({
-    email: "koushikhait49@gmail.com",
-    from: process.env.MAILER_FROM,
-    fromName: process.env.MAILER_FROM_NAME,
-    to: user?.email,
-    subject: "Password reset request",
-    link: `${req.protocol}://${req.get(
-      "host"
-    )}/api/v1/users/verify-email/${unHashedToken}`,
-    mailgenContent: {
+    // Send mail with the password reset link. It should be the link of the frontend url with token
+    await sendEmail({
+      email: "koushikhait49@gmail.com",
+      from: process.env.MAILER_FROM,
+      fromName: process.env.MAILER_FROM_NAME,
+      to: user?.email,
       subject: "Password reset request",
-      body: {
-        name: user?.username,
-        intro: "Password reset request",
-        action: {
-          instructions: "Click the button below to Reset your password",
-          button: {
-            color: "#DC4D2F",
-            text: "Reset Password",
-            // ! NOTE: Following link should be the link of the frontend page responsible to request password reset
-            // ! Frontend will send the below token with the new password in the request body to the backend reset password endpoint
-            // * Ideally take the url from the .env file which should be teh url of the frontend
-            link: `${req.protocol}://${req.get("host")}/api/v1/user/reset-password/${unHashedToken}`,
+      link: `${req.protocol}://${req.get(
+        "host"
+      )}/api/v1/users/verify-email/${unHashedToken}`,
+      mailgenContent: {
+        subject: "Password reset request",
+        body: {
+          name: user?.username,
+          intro: "Password reset request",
+          action: {
+            instructions: "Click the button below to Reset your password",
+            button: {
+              color: "#DC4D2F",
+              text: "Reset Password",
+              // ! NOTE: Following link should be the link of the frontend page responsible to request password reset
+              // ! Frontend will send the below token with the new password in the request body to the backend reset password endpoint
+              // * Ideally take the url from the .env file which should be teh url of the frontend
+              link: `${process.env.CLIENT_RESET_PASSWORD_URL}/${unHashedToken}`,
+            },
           },
         },
       },
-    },
-  });
+    });
 
-  return res
-    .status(200)
-    .json(
-      new ApiResponse(
-        200,
-        {},
-        "Password reset mail has been sent on your mail id"
-      )
-    );
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(
+          200,
+          {},
+          "Password reset mail has been sent on your mail id"
+        )
+      );
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 const resetForgottenPassword = asyncHandler(async (req, res) => {
   const { resetToken } = req.params;
-  const { newPassword } = req.body;
+  const { newPassword, confirmNewPassword, email } = req.body;
 
   // Create a hash of the incoming reset token
 

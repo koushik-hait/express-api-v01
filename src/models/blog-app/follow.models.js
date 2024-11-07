@@ -18,6 +18,8 @@ const followSchema = new Schema(
   { timestamps: true }
 );
 
+followSchema.index({ followerId: 1, followeeId: 1 }, { unique: true });
+
 followSchema.plugin(mongooseAggregatePaginate);
 
 export const BlogFollow = mongoose.model("BlogFollow", followSchema);
