@@ -25,7 +25,7 @@
   "author": "koushik-hait",
   "license": "MIT",
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.669.0",
+    "@aws-sdk/client-s3": "^3.685.0",
     "@aws-sdk/s3-request-presigner": "^3.670.0",
     "@faker-js/faker": "^8.0.2",
     "@neondatabase/serverless": "^0.10.1",
