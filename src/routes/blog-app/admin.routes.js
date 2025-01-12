@@ -3,8 +3,9 @@ import { UserRolesEnum } from "../../constants.js";
 import {
   createCategory,
   getAllCategories,
-  getAllUsers,
   getAllPosts,
+  getAllUsers,
+  getAllTags,
 } from "../../controllers/blog-app/admin.controllers.js";
 import {
   verifyJWT,
@@ -39,5 +40,9 @@ router
 router
   .route("/category/all")
   .get(verifyJWT, verifyPermission([UserRolesEnum.ADMIN]), getAllCategories);
+
+router
+  .route("/tag/all")
+  .get(verifyJWT, verifyPermission([UserRolesEnum.ADMIN]), getAllTags);
 
 export default router;

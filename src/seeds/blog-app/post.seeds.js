@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import { User } from "../../models/auth/user.models.js";
 import { Category } from "../../models/blog-app/category.models.js";
 import { BlogPost } from "../../models/blog-app/post.models.js";
+import { LOCAL_DB_URL } from "../_constants.js";
 import { BLOG_CONTENT, POSTS_COUNT } from "../_constants.js";
 
 const ENV = process.env.NODE_ENV || "development";
@@ -14,7 +15,7 @@ const db_url =
 
 const seedPosts = async () => {
   try {
-    await mongoose.connect(`${db_url}`, {
+    await mongoose.connect(`${LOCAL_DB_URL}`, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       // useFindAndModify: false,

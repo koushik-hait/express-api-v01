@@ -5,7 +5,7 @@ import { AvailableUserRoles, UserRolesEnum } from "../../constants.js";
 import { UserProfile } from "../../models/auth/profile.models.js";
 import { User } from "../../models/auth/user.models.js";
 import { genEncryptedPassword } from "../../utils/helper.js";
-import { USERS_COUNT } from "../_constants.js";
+import { LOCAL_DB_URL, USERS_COUNT } from "../_constants.js";
 
 const ENV = process.env.NODE_ENV || "development";
 
@@ -16,15 +16,12 @@ const db_url =
 
 const seedUserProfiles = async () => {
   try {
-    await mongoose.connect(
-      `${db_url}`,
-      {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        // useFindAndModify: false,
-        // useCreateIndex: true,
-      }
-    );
+    await mongoose.connect(`${LOCAL_DB_URL}`, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      // useFindAndModify: false,
+      // useCreateIndex: true,
+    });
 
     const users = await User.find({});
     if (users.length === 0) {

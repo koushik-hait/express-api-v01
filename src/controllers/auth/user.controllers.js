@@ -127,7 +127,7 @@ const loginUser = asyncHandler(async (req, res) => {
   });
 
   if (!user) {
-    throw new ApiError(404, "User does not exist");
+    return res.status(404).json(new ApiResponse(404, null, "User not found"));
   }
 
   if (user.loginType !== UserLoginType.EMAIL_PASSWORD) {

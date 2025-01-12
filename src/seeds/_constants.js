@@ -1,6 +1,8 @@
 // * USERS
 export const USERS_COUNT = 5000;
 
+export const LOCAL_DB_URL = "mongodb://localhost:27017/poc_app";
+
 // * ECOMMERCE
 export const CATEGORIES_COUNT = 25;
 export const ADDRESSES_COUNT = 100;

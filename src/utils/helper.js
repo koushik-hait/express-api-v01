@@ -187,7 +187,37 @@ export const getRandomNumber = (max) => {
   return Math.floor(Math.random() * max);
 };
 
+/**
+ * Generates an encrypted password using bcrypt.
+ *
+ * @param {string} password - The password to be encrypted.
+ * @returns {string} - The encrypted password.
+ */
 export const genEncryptedPassword = (password) => {
   const salt = bcrypt.genSaltSync(10);
   return bcrypt.hashSync(password, salt);
+};
+
+/**
+ * Generates a slug from a given title by converting it to lowercase,
+ * replacing non-alphanumeric characters with a single hyphen, and removing duplicate hyphens.
+ *
+ * @param {string} title The title to generate a slug from.
+ * @returns {string} The generated slug.
+ */
+export const generateSlugFromTitle = (title) => {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/-+/g, "-");
+};
+
+/**
+ * Generates a random alphanumeric string of a specified length.
+ *
+ * @param {number} length - The length of the random string to generate.
+ * @returns {string} - The generated random alphanumeric string.
+ */
+export const generateRandomString = (length) => {
+  return Math.random().toString(36).substring(length);
 };

@@ -283,7 +283,7 @@ export const getAllPosts = asyncHandler(async (req, res) => {
           deleted: false,
         },
       },
-      // ...postAggregator(uid),
+
       ...postCommonAggregation(uid),
     ]);
 

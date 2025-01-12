@@ -7,7 +7,7 @@ import { users } from "../db/schema/user.js";
 import { UserProfile } from "../models/auth/profile.models.js";
 import { User } from "../models/auth/user.models.js";
 import { genEncryptedPassword } from "../utils/helper.js";
-import { USERS_COUNT } from "./_constants.js";
+import { LOCAL_DB_URL, USERS_COUNT } from "./_constants.js";
 const db = drizzle("postgresql://testuser:test12345@localhost:5432/test_db");
 
 const ENV = process.env.NODE_ENV || "development";
@@ -27,23 +27,23 @@ const newUsers = new Array(500).fill("_").map(() => ({
   email: faker.internet.email(),
   password: genEncryptedPassword("123456"),
   isEmailVerified: faker.helpers.arrayElement([true, false]),
-  role: faker.helpers.arrayElement(["user", "admin"]),
+  role: faker.helpers.arrayElement(["USER", "ADMIN"]),
 }));
 
 const seedUsers = async () => {
   try {
-    // await mongoose.connect(`${db_url}`, {
-    //   useNewUrlParser: true,
-    //   useUnifiedTopology: true,
-    //   // useFindAndModify: false,
-    //   // useCreateIndex: true,
-    // });
+    await mongoose.connect(`${LOCAL_DB_URL}`, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      // useFindAndModify: false,
+      // useCreateIndex: true,
+    });
 
-    await db.insert(users).values(newUsers);
-    // await User.deleteMany({});
-    // await User.insertMany(users);
+    // await db.insert(users).values(newUsers);
+    await User.deleteMany({});
+    await User.insertMany(newUsers);
     console.log("Users seeded successfully");
-    // mongoose.connection.close();
+    mongoose.connection.close();
     process.exit(0);
   } catch (error) {
     console.log("Error seeding users: ", error);

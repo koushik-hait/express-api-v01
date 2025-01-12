@@ -26,12 +26,31 @@ export const createCategory = asyncHandler(async (req, res) => {
 
 export const getAllCategories = asyncHandler(async (req, res) => {
   try {
-    const categories = await Category.find({}).exec();
+    const categories = await Category.find({}).select("name").exec();
     return res
       .status(200)
       .json(
         new ApiResponse(200, categories, "Categories fetched successfully")
       );
+  } catch (error) {
+    return res
+      .status(error.statusCode || 500)
+      .json(
+        new ApiResponse(
+          error.statusCode || 500,
+          null,
+          error.message || "Internal Server Error"
+        )
+      );
+  }
+});
+
+export const getAllTags = asyncHandler(async (req, res) => {
+  try {
+    const tags = await BlogPost.distinct("tags").exec();
+    return res
+      .status(200)
+      .json(new ApiResponse(200, tags, "Categories fetched successfully"));
   } catch (error) {
     return res
       .status(error.statusCode || 500)
@@ -103,13 +122,27 @@ export const getAllUsers = asyncHandler(async (req, res) => {
 
 export const getAllPosts = asyncHandler(async (req, res) => {
   try {
-    const { page, limit, status, deleted, tag, category, author, publishedAt } =
-      req.query;
+    const {
+      page,
+      limit,
+      status,
+      deleted,
+      tag,
+      category,
+      author,
+      publishedFrom,
+      publishedTo,
+      sortBy,
+      sortDirection,
+    } = req.query;
 
-    console.log(req.query);
-
-    const pageNumber = parseInt(page, 10);
-    const limitNumber = parseInt(limit, 10);
+    // Extracting date range from query parameters
+    const startDate = req.query.publishedFrom
+      ? new Date(req.query.publishedFrom)
+      : null;
+    const endDate = req.query.publishedTo
+      ? new Date(req.query.publishedTo)
+      : null;
 
     // Create a match object based on the query parameters
     const matchConditions = {};
@@ -117,6 +150,9 @@ export const getAllPosts = asyncHandler(async (req, res) => {
     // Check for each parameter and add it to the matchConditions if it exists
     if (status) {
       matchConditions.status = status;
+    }
+    if (tag) {
+      matchConditions.tags = { $in: [tag] };
     }
     if (deleted) {
       matchConditions.deleted = deleted === "true"; // Assuming deleted is a boolean
@@ -127,14 +163,19 @@ export const getAllPosts = asyncHandler(async (req, res) => {
     if (author) {
       matchConditions.author = author;
     }
-    if (publishedAt) {
-      // Assuming publishedAt is a date string, you may want to convert it to a Date object
-      matchConditions.publishedAt = new Date(publishedAt);
+    if (startDate && endDate) {
+      matchConditions.createdAt = { $gte: startDate, $lte: endDate };
+    } else if (startDate) {
+      matchConditions.createdAt = { $gte: startDate };
+    } else if (endDate) {
+      matchConditions.createdAt = { $lte: endDate };
     }
 
     const postAggregate = BlogPost.aggregate([
       {
-        $match: matchConditions,
+        $match: {
+          ...matchConditions,
+        },
       },
       {
         $lookup: {
@@ -149,20 +190,23 @@ export const getAllPosts = asyncHandler(async (req, res) => {
           author: { $first: "$author" },
         },
       },
+      {
+        $sort: { [sortBy]: sortDirection ? 1 : -1 }, // Sort by the specified field and direction
+      },
     ]);
 
     const payload = await BlogPost.aggregatePaginate(
       postAggregate,
       getMongoosePaginationOptions({
-        pageNumber,
-        limitNumber,
+        page,
+        limit,
         customLabels: {
           docs: "data",
           totalDocs: "totalItems",
         },
       })
     );
-    console.log(payload);
+    // console.log(payload);
     return res
       .status(200)
       .json(new ApiResponse(200, payload, "All Post Fetched successfully..."));

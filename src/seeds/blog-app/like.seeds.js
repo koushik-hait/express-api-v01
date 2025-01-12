@@ -3,6 +3,7 @@ import { User } from "../../models/auth/user.models.js";
 import { BlogComment } from "../../models/blog-app/comment.models.js";
 import { BlogLike } from "../../models/blog-app/like.models.js";
 import { BlogPost } from "../../models/blog-app/post.models.js";
+import { LOCAL_DB_URL } from "../_constants.js";
 
 const ENV = process.env.NODE_ENV || "development";
 
@@ -12,7 +13,7 @@ const db_url =
     : "mongodb+srv://mongo_user:mongouser549344@cluster0.vki8qxl.mongodb.net/poc_app";
 
 (async () => {
-  await mongoose.connect(`${db_url}`, {
+  await mongoose.connect(`${LOCAL_DB_URL}`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     // useFindAndModify: false,
