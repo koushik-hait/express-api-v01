@@ -11,6 +11,8 @@ import {
   validateMongoId,
 } from "../../utils/helper.js";
 
+import { getCache, setCache } from "../../db/sqlite-config.js";
+
 /**
  * @param {import("express").Request} req
  * @description Utility function which returns the pipeline stages to structure the blog post schema with calculations like, likes count, comments count, isLiked, isBookmarked etc
@@ -260,21 +262,19 @@ export const getAllPosts = asyncHandler(async (req, res) => {
 
     const uid = req.user?._id;
 
-    // const cachedPost = await getCached(
-    //   `/api/v1/blog/all?page=${page}&limit=10`
-    // );
+    const cachedPost = await getCache(`/api/v1/blog/all?page=${page}&limit=10`);
 
-    // if (cachedPost) {
-    //   return res
-    //     .status(200)
-    //     .json(
-    //       new ApiResponse(
-    //         200,
-    //         cachedPost,
-    //         "Blogs fetched successfully from Cached data"
-    //       )
-    //     );
-    // }
+    if (cachedPost) {
+      return res
+        .status(200)
+        .json(
+          new ApiResponse(
+            200,
+            cachedPost,
+            "Blogs fetched successfully from Cached data"
+          )
+        );
+    }
 
     const postAggregate = Blog.aggregate([
       {
@@ -303,7 +303,7 @@ export const getAllPosts = asyncHandler(async (req, res) => {
       return res.status(404).json(new ApiResponse(404, null, "No blog found"));
     }
 
-    // await setCached(`/api/v1/blog/all?page=${page}&limit=10`, payload);
+    await setCache(`/api/v1/blog/all?page=${page}&limit=10`, payload, 60000000);
 
     return res
       .status(200)

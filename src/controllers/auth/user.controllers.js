@@ -13,7 +13,7 @@ import {
   removeLocalFile,
   validateMongoId,
 } from "../../utils/helper.js";
-import { sendEmail } from "../../utils/mailer.js";
+import { sendEmail, sendEmailWithMailerSend } from "../../utils/mailer.js";
 
 const generateAccessAndRefreshTokens = async (userId) => {
   try {
@@ -71,6 +71,32 @@ const registerUser = asyncHandler(async (req, res) => {
 
   await sendEmail({
     email: "koushikhait49@gmail.com",
+    from: process.env.MAILER_FROM,
+    fromName: process.env.MAILER_FROM_NAME,
+    to: user?.email,
+    subject: "Please verify your email",
+    link: `${req.protocol}://${req.get(
+      "host"
+    )}/api/v1/users/verify-email/${unHashedToken}`,
+    mailgenContent: {
+      subject: "Please verify your email",
+      body: {
+        name: user?.username,
+        intro: "Please verify your email",
+        action: {
+          instructions: "Click the button below to verify your email",
+          button: {
+            color: "#DC4D2F",
+            text: "Verify Email",
+            link: `${req.protocol}://${req.get("host")}/api/v1/user/verify-email/${unHashedToken}`,
+          },
+        },
+      },
+    },
+  });
+
+  await sendEmailWithMailerSend({
+    email: "koushikhait49@koushikhait.site",
     from: process.env.MAILER_FROM,
     fromName: process.env.MAILER_FROM_NAME,
     to: user?.email,

@@ -1,8 +1,13 @@
+import { EmailParams, MailerSend, Recipient, Sender } from "mailersend";
 import Mailgen from "mailgen";
 import nodemailer from "nodemailer";
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.MAILER_SEND_API_KEY,
+});
 
 const sendEmail = async (options) => {
   const mailGenerator = new Mailgen({
@@ -74,4 +79,42 @@ const sendEmailWithResend = async (options) => {
   }
 };
 
-export { sendEmail, sendEmailWithResend };
+const sendEmailWithMailerSend = async (options) => {
+  try {
+    const mailGenerator = new Mailgen({
+      theme: "default",
+      product: {
+        name: "ABC Company",
+        link: "https://poc.app",
+      },
+    });
+
+    const emailTextual = mailGenerator.generatePlaintext(
+      options.mailgenContent
+    );
+    const emailHtml = mailGenerator.generate(options.mailgenContent);
+
+    const sentFrom = new Sender(options.email, "Koushik Hait");
+
+    const recipients = [new Recipient(options.to, options.to)];
+
+    const emailParams = new EmailParams()
+      .setFrom(sentFrom)
+      .setTo(recipients)
+      .setReplyTo(sentFrom)
+      .setSubject(options.subject)
+      .setHtml(emailHtml)
+      .setText(emailTextual);
+
+    console.log("emailParams", emailParams, "options", options);
+
+    await mailerSend.email.send(emailParams);
+  } catch (error) {
+    console.log(
+      "Email service failed silently. Make sure you have provided your MAILERSEND credentials in the .env file"
+    );
+    console.log("Error: ", error);
+  }
+};
+
+export { sendEmail, sendEmailWithMailerSend, sendEmailWithResend };

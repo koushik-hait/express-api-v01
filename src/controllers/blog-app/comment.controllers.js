@@ -173,8 +173,9 @@ export const updateComment = asyncHandler(async (req, res) => {
  */
 export const getPostComments = asyncHandler(async (req, res) => {
   try {
-    const uid = req.user._id ? validateMongoId(req.user._id) : null;
+    const uid = req?.user?._id ? validateMongoId(req?.user?._id) : null;
     const { pid } = req.params;
+    console.log(pid, uid);
     const { limit, page } = req.query;
     const commentsAggregate = BlogComment.aggregate([
       {
@@ -216,7 +217,12 @@ export const getPostComments = asyncHandler(async (req, res) => {
           pipeline: [
             {
               $match: {
-                likedBy: uid,
+                $expr: {
+                  $or: [
+                    { $eq: ["$likedBy", uid] },
+                    { $eq: [uid, null] }, // This allows for uid to be null
+                  ],
+                },
               },
             },
           ],
