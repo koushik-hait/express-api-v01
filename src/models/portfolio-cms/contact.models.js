@@ -7,7 +7,11 @@ const contactSchema = new Schema(
       type: String,
       required: true,
     },
-    contact_type: {
+    email: {
+      type: String,
+      required: true,
+    },
+    mobile: {
       type: String,
       required: true,
     },
@@ -18,5 +22,7 @@ const contactSchema = new Schema(
   },
   { timestamps: true }
 );
+
+contactSchema.plugin(mongooseAggregatePaginate);
 
 export const Contact = mongoose.model("Contact", contactSchema);
