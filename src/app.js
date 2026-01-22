@@ -1,7 +1,7 @@
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
-import compression from "express-compression";
+import compression from "compression";
 import { rateLimit } from "express-rate-limit";
 import helmet from "helmet";
 // import session from "express-session";
