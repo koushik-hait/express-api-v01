@@ -1,43 +1,19 @@
-import dotenv from "dotenv";
-import { httpServer } from "./app.js";
-import connectDB from "./db/index.js";
-// import { connectToRedis } from "./db/redis-config.js";
+import app from "./app.js";
 
-dotenv.config({
-  path: "./.env",
+const PORT = process.env.PORT || 3000;
+
+const server = app.listen(PORT, () => {
+  console.log(`
+    🚀 Server is running!
+    🔉 Listening on port: ${PORT}
+    🏠 URL: http://localhost:${PORT}
+  `);
 });
 
-/**
- * Starting from Node.js v14 top-level await is available and it is only available in ES modules.
- * This means you can not use it with common js modules or Node version < 14.
- */
-const majorNodeVersion = +process.env.NODE_VERSION?.split(".")[0] || 0;
-
-const startServer = () => {
-  httpServer.listen(process.env.PORT || 8080, () => {
-    console.info(
-      `📑 Visit the documentation at: http://localhost:${
-        process.env.PORT || 8080
-      }`
-    );
-    console.log("⚙️  Server is running on port: " + process.env.PORT);
+// Handle graceful shutdown
+process.on("SIGTERM", () => {
+  console.log("SIGTERM signal received: closing HTTP server");
+  server.close(() => {
+    console.log("HTTP server closed");
   });
-};
-
-if (majorNodeVersion >= 14) {
-  try {
-    await connectDB();
-    // await connectToRedis();
-    startServer();
-  } catch (err) {
-    console.log("Mongo db connect error: ", err);
-  }
-} else {
-  connectDB()
-    .then(() => {
-      startServer();
-    })
-    .catch((err) => {
-      console.log("Mongo db connect error: ", err);
-    });
-}
+});

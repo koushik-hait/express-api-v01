@@ -1,202 +1,56 @@
-import cookieParser from "cookie-parser";
-import cors from "cors";
 import express from "express";
-import compression from "compression";
-import { rateLimit } from "express-rate-limit";
+import cors from "cors";
 import helmet from "helmet";
-// import session from "express-session";
-import fs from "fs";
-import { createServer } from "http";
-// import passport from "passport";
-import path from "path";
-import requestIp from "request-ip";
-import { Server } from "socket.io";
-import swaggerUi from "swagger-ui-express";
-import { fileURLToPath } from "url";
-import YAML from "yaml";
-import { DB_NAME } from "./constants.js";
-import { dbInstance } from "./db/index.js";
-import { initializeSocketIO, initSocketIO } from "./libs/socket/index.js";
-import morganMiddleware from "./logger/morgan.logger.js";
-// import { upload } from "./middlewares/multer.middleware.js";
-import { ApiError } from "./utils/ApiError.js";
-import { ApiResponse } from "./utils/ApiResponse.js";
+import morgan from "morgan";
+import dotenv from "dotenv";
+import userRoutes from "./routes/user.routes.js";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const file = fs.readFileSync(path.resolve(__dirname, "./swagger.yaml"), "utf8");
-const swaggerDocument = YAML.parse(file);
+dotenv.config();
 
 const app = express();
 
-const httpServer = createServer(app);
-
-const io = new Server(httpServer, {
-  pingTimeout: 60000,
-  cors: {
-    origin: process.env.CORS_ORIGIN,
-    credentials: true,
-  },
-});
-
-app.set("io", io); // using set method to mount the `io` instance on the app to avoid usage of `global`
-
-// global middlewares
-app.use(
-  cors({
-    origin:
-      process.env.CORS_ORIGIN === "*"
-        ? "*" // This might give CORS error for some origins due to credentials set to true
-        : process.env.CORS_ORIGIN?.split(","), // For multiple cors origin for production. Refer https://github.com/hiteshchoudhary/apihub/blob/a846abd7a0795054f48c7eb3e71f3af36478fa96/.env.sample#L12C1-L12C12
-    credentials: true,
-  })
-);
-
-app.use(compression()); //zlib,gzip,brotli, deflate, zstandard compression config
-
-app.use(requestIp.mw());
-
-// Rate limiter to avoid misuse of the service and avoid cost spikes
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5000, // Limit each IP to 500 requests per `window` (here, per 15 minutes)
-  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-  keyGenerator: (req, res) => {
-    return req.clientIp; // IP address from requestIp.mw(), as opposed to req.ip
-  },
-  handler: (_, __, ___, options) => {
-    throw new ApiError(
-      options.statusCode || 500,
-      `There are too many requests. You are only allowed ${
-        options.max
-      } requests per ${options.windowMs / 60000} minutes`
-    );
-  },
-});
-
-// Apply the rate limiting middleware to all requests
-app.use(limiter);
-
-app.use(express.json({ limit: "50mb" }));
-app.use(express.urlencoded({ extended: true, limit: "50mb" }));
-app.use(express.static("public")); // configure static file to save images locally
-app.use(cookieParser());
-// Use Helmet!
+// Middlewares
 app.use(helmet());
+app.use(cors());
+app.use(morgan("dev"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// required for passport
-// app.use(
-//   session({
-//     secret: process.env.EXPRESS_SESSION_SECRET,
-//     resave: true,
-//     saveUninitialized: true,
-//   })
-// ); // session secret
-// app.use(passport.initialize());
-// app.use(passport.session()); // persistent login sessions
+// Routes
+app.use("/api/v1/users", userRoutes);
 
-app.use(morganMiddleware);
-// api routes
-import { errorHandler } from "./middlewares/error.middleware.js";
-import userRouter from "./routes/auth/user.routes.js";
-import blogAdminRoute from "./routes/blog-app/admin.routes.js";
-import blogBookmarkRoute from "./routes/blog-app/bookmark.routes.js";
-import blogCategoryRoute from "./routes/blog-app/category.routes.js";
-import blogCommentRoute from "./routes/blog-app/comment.routes.js";
-import blogFollowRoute from "./routes/blog-app/follow.routes.js";
-import blogLikeRoute from "./routes/blog-app/like.routes.js";
-import blogPostRoute from "./routes/blog-app/post.routes.js";
-import blogProfileRoute from "./routes/blog-app/profile.routes.js";
-import healthcheckRouter from "./routes/healthcheck.routes.js";
-import imageRouter from "./routes/image-app/image.routes.js";
-import paymentRoute from "./routes/payment.routes.js";
-import portfolioContactRoute from "./routes/portfolio-cms/contact.routes.js"; //portfolio-cms
-import publicRouter from "./routes/public.routes.js";
-import videoAdminRoute from "./routes/video-app/admin.routes.js";
-import videoRouter from "./routes/video-app/video.routes.js";
-
-// * healthcheck
-app.use("/api/v1/healthcheck", healthcheckRouter);
-//public route
-app.use("/api/v1/public", publicRouter);
-//user api routes
-app.use("/api/v1/user", userRouter);
-//video-app api routes
-app.use("/api/v1/v", videoRouter);
-app.use("/api/v1/v/admin", videoAdminRoute);
-//payment api routes
-app.use("/api/v1/payment", paymentRoute);
-//blog-app api routes
-app.use("/api/v1/blog", blogPostRoute);
-app.use("/api/v1/blog/category", blogCategoryRoute);
-app.use("/api/v1/blog/profile", blogProfileRoute);
-app.use("/api/v1/blog/like", blogLikeRoute);
-app.use("/api/v1/blog/comment", blogCommentRoute);
-app.use("/api/v1/blog/follow", blogFollowRoute);
-app.use("/api/v1/blog/bookmark", blogBookmarkRoute);
-app.use("/api/v1/blog/admin", blogAdminRoute);
-//portfolio-cms api routes
-app.use("/api/v1/portfolio", portfolioContactRoute);
-//image-app api routes
-app.use("/api/v1/i", imageRouter);
-
-import { avoidInProduction } from "./middlewares/auth.middleware.js";
-
-initializeSocketIO(io);
-// initSocketIO(io);
-
-// ! 🚫 Danger Zone
-app.delete("/api/v1/reset-db", avoidInProduction, async (req, res) => {
-  if (dbInstance) {
-    // Drop the whole DB
-    await dbInstance.connection.db.dropDatabase({
-      dbName: DB_NAME,
-    });
-
-    const directory = "./public/images";
-
-    // Remove all product images from the file system
-    fs.readdir(directory, (err, files) => {
-      if (err) {
-        // fail silently
-        console.log("Error while removing the images: ", err);
-      } else {
-        for (const file of files) {
-          if (file === ".gitkeep") continue;
-          fs.unlink(path.join(directory, file), (err) => {
-            if (err) throw err;
-          });
-        }
-      }
-    });
-    // remove the seeded users if exist
-    fs.unlink("./public/temp/seed-credentials.json", (err) => {
-      // fail silently
-      if (err) console.log("Seed credentials are missing.");
-    });
-    return res
-      .status(200)
-      .json(new ApiResponse(200, null, "Database dropped successfully"));
-  }
-  throw new ApiError(500, "Something went wrong while dropping the database");
+// Health check route
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    status: "success",
+    message: "Server is healthy",
+    timestamp: new Date().toISOString(),
+  });
 });
 
-// * API DOCS
-// ? Keeping swagger code at the end so that we can load swagger on "/" route
-app.use(
-  "/",
-  swaggerUi.serve,
-  swaggerUi.setup(swaggerDocument, {
-    swaggerOptions: {
-      docExpansion: "all", // keep all the sections collapsed by default
-    },
-    customSiteTitle: "POC API docs",
-  })
-);
+// Base API route
+app.get("/", (req, res) => {
+  res.status(200).json({
+    message: "Welcome to the ERP API",
+    version: "1.0.0",
+  });
+});
 
-// common error handling middleware
-app.use(errorHandler);
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({
+    status: "error",
+    message: "Resource not found",
+  });
+});
 
-export { httpServer };
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(err.status || 500).json({
+    status: "error",
+    message: err.message || "Internal Server Error",
+  });
+});
+
+export default app;
