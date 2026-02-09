@@ -1,36 +1,31 @@
 import express from "express";
 import {
-  getUsers,
-  getUser,
-  createUser,
-  updateUser,
-  deleteUser,
-} from "../controllers/user.controller.js";
+  getTags,
+  getTag,
+  createTag,
+  updateTag,
+  deleteTag,
+} from "../controllers/tag.controller.js";
 import { authenticate, authorize } from "../middleware/auth.middleware.js";
 import {
   validate,
   validateParams,
+  validateBody,
 } from "../middleware/validation.middleware.js";
 import {
-  createUserSchema,
-  updateUserSchema,
+  createTagSchema,
+  updateTagSchema,
   idParamSchema,
-  userQuerySchema,
-} from "../validators/user.validator.js";
+} from "../validators/product.validator.js";
 
 const router = express.Router();
 
-// Apply authentication to all routes
-router.use(authenticate);
-
 /**
  * @swagger
- * /api/v1/users:
+ * /api/v1/tags:
  *   get:
- *     summary: Get all users
- *     tags: [Users]
- *     security:
- *       - bearerAuth: []
+ *     summary: Get all tags
+ *     tags: [Tags]
  *     parameters:
  *       - in: query
  *         name: page
@@ -46,23 +41,16 @@ router.use(authenticate);
  *           type: string
  *     responses:
  *       200:
- *         description: List of users
+ *         description: List of tags
  */
-router.get(
-  "/",
-  authorize("admin"),
-  validate({ query: userQuerySchema }),
-  getUsers,
-);
+router.get("/", getTags);
 
 /**
  * @swagger
- * /api/v1/users/{id}:
+ * /api/v1/tags/{id}:
  *   get:
- *     summary: Get user by ID
- *     tags: [Users]
- *     security:
- *       - bearerAuth: []
+ *     summary: Get tag by ID
+ *     tags: [Tags]
  *     parameters:
  *       - in: path
  *         name: id
@@ -71,16 +59,16 @@ router.get(
  *           type: integer
  *     responses:
  *       200:
- *         description: User data
+ *         description: Tag data
  */
-router.get("/:id", authorize("admin"), validateParams(idParamSchema), getUser);
+router.get("/:id", validateParams(idParamSchema), getTag);
 
 /**
  * @swagger
- * /api/v1/users:
+ * /api/v1/tags:
  *   post:
- *     summary: Create new user
- *     tags: [Users]
+ *     summary: Create new tag
+ *     tags: [Tags]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -88,24 +76,25 @@ router.get("/:id", authorize("admin"), validateParams(idParamSchema), getUser);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/CreateUser'
+ *             $ref: '#/components/schemas/CreateTag'
  *     responses:
  *       201:
- *         description: User created
+ *         description: Tag created
  */
 router.post(
   "/",
+  authenticate,
   authorize("admin"),
-  validate({ body: createUserSchema }),
-  createUser,
+  validateBody(createTagSchema),
+  createTag,
 );
 
 /**
  * @swagger
- * /api/v1/users/{id}:
+ * /api/v1/tags/{id}:
  *   put:
- *     summary: Update user
- *     tags: [Users]
+ *     summary: Update tag
+ *     tags: [Tags]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -114,29 +103,24 @@ router.post(
  *         required: true
  *         schema:
  *           type: integer
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/UpdateUser'
  *     responses:
  *       200:
- *         description: User updated
+ *         description: Tag updated
  */
 router.put(
   "/:id",
+  authenticate,
   authorize("admin"),
-  validate({ params: idParamSchema, body: updateUserSchema }),
-  updateUser,
+  validate({ params: idParamSchema, body: updateTagSchema }),
+  updateTag,
 );
 
 /**
  * @swagger
- * /api/v1/users/{id}:
+ * /api/v1/tags/{id}:
  *   delete:
- *     summary: Delete user
- *     tags: [Users]
+ *     summary: Delete tag
+ *     tags: [Tags]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -147,13 +131,14 @@ router.put(
  *           type: integer
  *     responses:
  *       204:
- *         description: User deleted
+ *         description: Tag deleted
  */
 router.delete(
   "/:id",
+  authenticate,
   authorize("admin"),
   validateParams(idParamSchema),
-  deleteUser,
+  deleteTag,
 );
 
 export default router;
